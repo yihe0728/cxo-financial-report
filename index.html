@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>药明康德(603259) vs 康龙化成(300759) · 2020-2025财务报告对比分析</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+<style>
+  :root{--a:#1f5bb3;--b:#2f9e6e;--bg:#ffffff;--card:#f7f9fc;--line:#e3e8f0;--txt:#1c2430;--mut:#6b7686;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:var(--txt);line-height:1.8;font-size:15px;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px 70px;}
+  header{border-bottom:3px solid var(--a);padding:34px 0 22px;text-align:center;}
+  header h1{font-size:27px;color:var(--a);letter-spacing:1px;}
+  header .sub{color:var(--mut);margin-top:8px;font-size:14px;}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .badge{background:#eef3fb;color:var(--a);padding:4px 13px;border-radius:18px;font-size:12.5px;}
+  nav{position:sticky;top:0;background:#fff;z-index:50;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:8px;}
+  nav a{display:inline-block;color:var(--mut);text-decoration:none;font-size:13px;margin:2px 10px;padding:3px 8px;border-radius:6px;}
+  nav a:hover{color:var(--a);background:#eef3fb;}
+  h2{font-size:22px;color:var(--a);margin:44px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--a);}
+  h3{font-size:17px;margin:20px 0 8px;color:#27405f;}
+  p{margin:9px 0;text-align:justify;}
+  .sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:14px 0;}
+  .chart{width:100%;height:380px;margin:12px 0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:center;}
+  th{background:#e8eef8;font-weight:600;}
+  td.l{text-align:left;}
+  tr:nth-child(even) td{background:#fafcff;}
+  .src{font-size:12px;color:var(--mut);margin-top:8px;word-break:break-all;}
+  .src a{color:var(--a);text-decoration:none;}
+  .src a:hover{text-decoration:underline;}
+  .tag{display:inline-block;background:#eaf1ff;color:var(--a);padding:1px 9px;border-radius:6px;font-size:12px;margin-right:6px;}
+  .note{background:#fff8e6;border-left:4px solid #e0b84c;padding:10px 14px;border-radius:8px;font-size:13.5px;margin:12px 0;}
+  .concl{background:#e9f6f0;border-left:4px solid var(--b);padding:12px 16px;border-radius:8px;margin:12px 0;font-size:14.5px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0;}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;}
+  .kpi .v{font-size:24px;font-weight:700;color:var(--a);}
+  .kpi .n{color:var(--mut);font-size:12.5px;}
+  .kpi .d{color:var(--b);font-size:12.5px;font-weight:600;}
+  @media(max-width:760px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+  ul{margin:8px 0 8px 22px;}
+  li{margin:5px 0;}
+  details{background:#fff;border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden;}
+  summary{cursor:pointer;padding:13px 18px;font-size:15px;font-weight:600;color:#fff;background:linear-gradient(90deg,var(--a),#3a7bd5);list-style:none;}
+  summary:hover{filter:brightness(1.05);}
+  summary::-webkit-details-marker{display:none;}
+  details .body{padding:16px 20px;}
+  details.l2 summary{background:#33507a;font-size:14px;}
+  .tree{background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:14px 18px;}
+  .tree .root{font-size:19px;font-weight:700;color:#c0392b;margin-bottom:4px;}
+  .tree .f{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--mut);margin-bottom:10px;}
+  .foot{margin-top:50px;border-top:1px solid var(--line);padding-top:16px;text-align:center;color:var(--mut);font-size:13px;}
+  .appendix{background:#fdfbf7;border:1px dashed #c9b98a;border-radius:12px;padding:18px 22px;margin:14px 0;}
+  .sign{margin-top:14px;display:flex;gap:40px;flex-wrap:wrap;font-size:14px;}
+  .sign span{border-top:1px solid #999;padding-top:6px;min-width:120px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>药明康德(603259)  vs  康龙化成(300759)</h1>
+  <p class="sub">CXO行业·医药研发及生产外包 · 2020-2025年度财务报告对比分析 · 课程作业</p>
+  <div class="badges">
+    <span class="badge">六年趋势</span><span class="badge">四大能力分析</span><span class="badge">杜邦分析</span>
+    <span class="badge">利润归因</span><span class="badge">2026半年报附录</span><span class="badge">数据来源可查</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#bg">背景</a><a href="#macro">宏观</a><a href="#ind">行业</a>
+  <a href="#fin">财务对比</a><a href="#dupont">杜邦分析</a><a href="#attr">利润归因</a>
+  <a href="#concl">结论</a><a href="#app1">附录一</a><a href="#app2">附录二</a><a href="#app3">附录三</a>
+</nav>
+
+<!-- ============ 一、背景调研 ============ -->
+<h2 id="bg">一、研究对象背景调研</h2>
+<div class="kpi-grid">
+  <div class="kpi"><div class="n">药明康德 2025营收</div><div class="v">454.6亿</div><div class="d">同比 +15.8%</div></div>
+  <div class="kpi"><div class="n">康龙化成 2025营收</div><div class="v">141.0亿</div><div class="d">同比 +14.8%</div></div>
+  <div class="kpi"><div class="n">药明康德 2025归母净利</div><div class="v">191.5亿</div><div class="d">同比 +102.6%</div></div>
+  <div class="kpi"><div class="n">康龙化成 2025归母净利</div><div class="v">16.6亿</div><div class="d">同比 -7.2%</div></div>
+</div>
+
+<div class="sec">
+  <h3>药明康德（603259.SH）— 全球CRDMO/CTDMO一体化龙头</h3>
+  <p><span class="tag">主营业务</span>以“CRDMO/CTDMO”业务模式为核心，为全球医药、生命科学及医疗器械客户提供从早期药物发现、临床前研究、临床CRO、小分子CDMO（化学工艺放大与生产）到“细胞和基因治疗CTDMO”的全流程一体化研发与生产服务。平台贯穿新药研发全生命周期，2025年报将业务划分为<strong>化学业务（WuXi Chemistry）、测试业务（WuXi Testing）、生物学业务（WuXi Biology）、高端治疗CTDMO业务（WuXi ATU）</strong>四大板块。</p>
+  <p><span class="tag">业务规模</span>2025年营业收入454.56亿元，同比增长15.8%；归属于母公司股东的净利润191.51亿元，同比大幅增长102.6%；扣除非经常性损益净利润132.41亿元，同比增长32.6%；期末总资产1031.21亿元，归母净资产802.48亿元。药明康德是全球CXO行业规模与市值领先的龙头企业。</p>
+  <p class="src">数据来源：<a href="https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=SH603259">东方财富·药明康德F10财务分析</a> ｜ 药明康德2025年年度报告</p>
+</div>
+
+<div class="sec">
+  <h3>康龙化成（300759.SZ）— 全流程一体化医药研发服务平台</h3>
+  <p><span class="tag">主营业务</span>在<strong>实验室服务、CMC（小分子CDMO）服务、临床研究服务、大分子和细胞与基因治疗服务</strong>四大业务平台，提供从药物发现（化合物的设计与合成、生物科学）到药物开发（工艺放大、临床研究）直至商业化生产的全流程一体化研发及生产服务。据其2025年报，公司在中国、英国和美国设有多个研发中心和生产基地。</p>
+  <p><span class="tag">业务规模</span>2025年营业收入140.95亿元，同比增长14.8%；归属于母公司股东的净利润16.64亿元，同比下降7.2%；扣除非经常性损益净利润15.38亿元，同比增长38.8%；期末总资产270.94亿元，归母净资产157.39亿元。康龙化成是CXO行业内仅次于药明康德的头部一体化平台之一。</p>
+  <p class="src">数据来源：<a href="https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=SZ300759">东方财富·康龙化成F10财务分析</a> ｜ 康龙化成2025年年度报告</p>
+</div>
+
+<!-- ============ 二、宏观经济环境 ============ -->
+<h2 id="macro">二、宏观经济环境分析</h2>
+<div class="sec">
+  <p><span class="tag">经济基本面</span>在全球经济整体承压、地缘政治与贸易摩擦仍存不确定性的背景下，我国把推动高质量发展、发展新质生产力放在突出位置。“十五五”规划纲要明确将<strong>生命科学与生物技术、脑科学与类脑研究、重大疾病防治与创新药研发</strong>等列为前沿科技攻关方向，并将生物制造等纳入未来产业布局，为医药研发外包行业提供了坚实的政策土壤。</p>
+  <p><span class="tag">医药消费与支付端</span>我国已建成覆盖全民的多层次医疗保障制度，2024年全国基本医保（含生育保险）基金总收入34913.37亿元、总支出29764.03亿元，统筹基金累计结存38628.52亿元，运行安全稳健，为下游支付与行业长期扩容提供了稳定支撑。</p>
+  <p><span class="tag">创新政策红利</span>国家医保局、国家卫健委2025年联合印发《支持创新药高质量发展的若干措施》，支持创新药研发、多元支付与加快进院；2024年我国一类创新药获批数量达48种。创新药研发活跃度提升，直接带动CRO/CDMO外包需求。</p>
+  <p><span class="tag">资本市场与海外环境</span>2024年以来全球生物医药一级市场投融资逐步回暖、头部客户新签订单回暖；但2025年美国《生物安全法案》相关立法动态带来地缘政策不确定性，对企业订单预期与海外产能布局构成阶段性扰动，构成行业宏观层面最主要的“双刃剑”。</p>
+  <p class="src">数据来源：<a href="https://www.gov.cn/lianbo/bumen/202507/content_7031956.htm">国家医保局·2024年全国医疗保障事业发展统计公报</a> ｜ <a href="https://www.gov.cn/yaowen/liebiao/202507/content_7030309.htm">新华社·十六条举措助力中国创新药加速跑</a></p>
+</div>
+
+<!-- ============ 三、行业发展 ============ -->
+<h2 id="ind">三、所属行业发展情况</h2>
+<div class="sec">
+  <div class="note"><b>行业定位：</b>药明康德与康龙化成同属CXO（医药研发及生产外包服务）行业，横跨CRO（合同研发组织）与CDMO/CMO（合同研发生产/生产组织）两大环节。</div>
+  <p><strong>全球：</strong>全球CRO市场由2017年约490亿美元增长至2024年约973亿美元，年复合增长率约10.3%；全球CDMO市场由2017年约394亿美元增长至2024年约1069亿美元。海外药企为应对专利悬崖与控制研发成本，持续将研发与生产环节外包，是行业增长的核心驱动。</p>
+  <p><strong>中国：</strong>2024年中国CXO/医药外包服务市场规模约1876亿元，同比增长约13.2%。中国CRO市场2024年约1183亿元（年复合增速约20.4%），中国CDMO市场约1246亿元（年复合增速约37.8%）。沙利文预计中国药物研发及生产外包服务全球占比有望持续提升。</p>
+  <p><strong>行业格局与趋势：</strong>CXO行业经历2022-2024年供给出清与订单去化后，2025年出现产能利用率触底回升、头部企业订单回暖的拐点迹象；头部企业依托一体化平台、全球化产能与“技术驱动”构建壁垒；生物药、ADC、多肽、GLP-1等高景气赛道提供增量。同时行业仍面临地缘政治（供应链“去中国化”讨论）、产能过剩、人力成本与价格竞争等风险。</p>
+  <p><strong>本报告两家公司在行业中的地位：</strong>药明康德为全球规模最大的一体化CRDMO平台之一，持续服务全球超过6000家客户，全球前20大药企客户贡献收入占比约三成，在化学药小分子工艺研发与生产领域市占率居全球前列；康龙化成则聚焦“全流程一体化”研发服务能力，实验室服务与CMC业务收入占比高，客户结构以创新药企为主。两者在下游客户群体、业务环节纵深与全球化产能布局上形成错位竞争，龙头企业与追赶者定位的差异，为理解两者财务表现的分化提供了结构性解释。</p>
+  <p class="src">数据来源：<a href="https://m.gelonghui.com/p/2241327">摩熵医药·中国CRO/CDMO企业排行榜及行业数据</a> ｜ 康龙化成2025年年报 ｜ 兴证医药《CXO行业深度报告》(2024.12)</p>
+</div>
+
+<!-- ============ 四、财务指标对比 ============ -->
+<h2 id="fin">四、财务指标对比分析（2020-2025）</h2>
+
+<div class="sec">
+  <h3>4.1 收入与利润规模对比</h3>
+  <div id="chartScale" class="chart"></div>
+  <table>
+    <tr><th rowspan="2">项目(亿元)</th><th colspan="6">药明康德</th><th colspan="6">康龙化成</th></tr>
+    <tr><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr>
+    <tr><td class="l">营业收入</td><td>165.35</td><td>229.02</td><td>393.55</td><td>403.41</td><td>392.41</td><td>454.56</td><td>51.34</td><td>74.44</td><td>102.66</td><td>115.38</td><td>122.76</td><td>140.95</td></tr>
+    <tr><td class="l">归母净利润</td><td>29.60</td><td>50.98</td><td>88.14</td><td>96.07</td><td>94.50</td><td>191.51</td><td>11.72</td><td>16.61</td><td>13.75</td><td>16.01</td><td>17.93</td><td>16.64</td></tr>
+    <tr><td class="l">扣非净利润</td><td>23.85</td><td>41.21</td><td>83.45</td><td>97.48</td><td>99.88</td><td>132.41</td><td>8.04</td><td>13.42</td><td>14.21</td><td>15.14</td><td>11.08</td><td>15.38</td></tr>
+    <tr><td class="l">总资产</td><td>377.09</td><td>506.67</td><td>646.90</td><td>736.69</td><td>803.26</td><td>1031.21</td><td>109.02</td><td>151.65</td><td>204.93</td><td>264.77</td><td>239.27</td><td>270.94</td></tr>
+  </table>
+  <p class="src">数据来源：<a href="https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=SH603259">药明康德F10</a>、<a href="https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=SZ300759">康龙化成F10</a>（东方财富数据中心，数据源自上市公司年报）</p>
+</div>
+
+<div class="sec">
+  <h3>4.2 盈利能力对比（毛利率 / 净利率）</h3>
+  <div id="chartProfit" class="chart"></div>
+  <div class="concl">结论：<b>药明康德</b>毛利率由2020年约38%稳步提升至2025年47.64%，反映一体化平台议价能力与高附加值业务占比提升；<b>康龙化成</b>毛利率整体围绕34%-37%窄幅波动，2025年34.83%。2025年药明净利率跳升至42.53%，主因系大额非经常性收益（处置参股企业股权等投资收益）一次性推高，其扣非净利率约为29.1%，盈利能力仍显著强于康龙（2025年净利率11.03%）。</div>
+  <p class="src">毛利率=毛利/营业收入；净利率=净利润/营业收入（东财口径）。数据来源：东方财富F10财务分析。</p>
+</div>
+
+<div class="sec">
+  <h3>4.3 盈利能力对比（ROE）</h3>
+  <div id="chartRoe" class="chart"></div>
+  <p>药明康德ROE在2020-2022年快速攀升（12.91%→20.62%），2023-2024年因高基数回落至16.78%，2025年受非经常性收益拉动跳升至28.56%（扣非后ROE约19.7%）；康龙化成ROE由2020年14.13%升至2021年17.31%后回落，2025年仅11.60%。整体看药明ROE长期高于康龙，资本回报质量更优。</p>
+</div>
+
+<div class="sec">
+  <h3>4.4 偿债能力对比</h3>
+  <div id="chartSolvency" class="chart"></div>
+  <table>
+    <tr><th rowspan="2">指标</th><th colspan="6">药明康德</th><th colspan="6">康龙化成</th></tr>
+    <tr><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr>
+    <tr><td class="l">流动比率</td><td>2.91</td><td>1.69</td><td>1.66</td><td>2.06</td><td>2.38</td><td>3.21</td><td>2.80</td><td>2.90</td><td>1.67</td><td>2.98</td><td>1.80</td><td>0.93</td></tr>
+    <tr><td class="l">资产负债率(%)</td><td>29.32</td><td>29.69</td><td>27.46</td><td>24.64</td><td>26.44</td><td>22.18</td><td>24.98</td><td>44.01</td><td>47.10</td><td>50.00</td><td>40.56</td><td>41.91</td></tr>
+  </table>
+  <div class="concl">结论：<b>药明康德</b>资产负债率稳定在22%-30%的较低区间，2025年降至22.18%，流动比率升至3.21，财务结构极为稳健、几乎无短期偿付压力；<b>康龙化成</b>资产负债率长期高于药明（2025年41.91%），2025年流动比率降至0.93、低于1，短期流动性覆盖偏弱，主要受产能扩建、长期资本开支占用资金影响，需重点关注其短期偿债压力。</div>
+</div>
+
+<div class="sec">
+  <h3>4.5 营运能力对比</h3>
+  <div id="chartOpr" class="chart"></div>
+  <p>两家公司存货周转率差异明显：<b>康龙化成</b>存货周转率长期在5-10次区间（2025年5.23次），显著高于药明（2025年3.00次），反映其交付与订单周转更快、存货占用更少；<b>药明康德</b>总资产周转率2022年达0.657次后回落至2025年0.496次（大量现金沉淀于资产负债表），而康龙2025年升至0.553次。整体看康龙在资产使用效率上更具优势，药明以充裕现金换取财务安全边际。</p>
+</div>
+
+<div class="sec">
+  <h3>4.6 成长能力对比（同比增速）</h3>
+  <div id="chartGrowth" class="chart"></div>
+  <p>2020-2021年CXO高景气阶段两家收入增速均处高位；2022年药明因新冠大订单基数高企收入增速71.8%；2023-2024年行业进入去库存与订单调整期，增速明显放缓（药明2024年收入-2.7%）；2025年行业拐点初现，两家收入增速分别回升至15.8%和14.8%。利润端波动更大：药明2025年净利增速102.6%含非经常收益；康龙2025年净利-7.2%（受汇兑、股权激励费用及毛利率下滑影响）。</p>
+</div>
+
+<!-- ============ 五、杜邦分析 ============ -->
+<h2 id="dupont">五、杜邦分析（2025年度）</h2>
+<div class="sec">
+  <p>杜邦分析将ROE分解为<strong>净利率 × 总资产周转率 × 权益乘数</strong>，从而把股东回报层层展开至公司经营与财务结构的各个角落。以下为两家公司2025年度杜邦三层分解（期末口径测算），点击各层可继续展开明细。</p>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="n">药明康德 ROE(期末口径)</div><div class="v">42.53%</div><div class="d">净利率42.53% × 周转44.08 × 乘数1.285</div></div>
+    <div class="kpi"><div class="n">康龙化成 ROE(期末口径)</div><div class="v">11.03%</div><div class="d">净利率11.03% × 周转52.023 × 乘数1.721</div></div>
+  </div>
+
+  <div class="tree">
+    <div class="root">药明康德 ROE = 42.53%（期末口径；东财加权28.56%）</div>
+    <div class="f"><span>净利率 42.53%</span><span>×</span><span>总资产周转率 44.08</span><span>×</span><span>权益乘数 1.285</span></div>
+    <details open>
+      <summary>盈利能力：净利率 42.53% —— 贡献最大因素</summary>
+      <div class="body">
+        <details class="l2"><summary>分子：净利润 191.51亿元（同比+102.6%，含大额非经常收益）</summary>
+          <div class="body"><p>扣非净利润132.41亿元（+32.6%）；归母与扣非差额约59亿元，主要来自处置参股企业股权、金融资产公允价值变动等非经常性收益，这是2025年净利率跳升的直接原因。</p></div>
+        </details>
+        <details class="l2"><summary>分母：营业收入 454.56亿元（+15.8%）</summary>
+          <div class="body"><p>化学业务、测试业务、生物学业务、高端治疗CTDMO业务协同增长，订单回暖带动收入修复。</p></div>
+        </details>
+        <p class="src">净利率=净利润/营业收入，东财口径。</p>
+      </div>
+    </details>
+    <details>
+      <summary>资产效率：总资产周转率 44.08</summary>
+      <div class="body">
+        <details class="l2"><summary>分子：营业收入 454.56亿元</summary><div class="body"><p>见净利率分解。</p></div></details>
+        <details class="l2"><summary>分母：期末总资产 1031.21亿元（同比+28.4%）</summary>
+          <div class="body"><p>2025年货币资金等流动资产大幅增加，资产扩张速度快于收入增速，摊薄了周转率。</p></div>
+        </details>
+      </div>
+    </details>
+    <details>
+      <summary>财务杠杆：权益乘数 1.285</summary>
+      <div class="body">
+        <details class="l2"><summary>总资产 1031.21亿元</summary><div class="body"><p>见上文。</p></div></details>
+        <details class="l2"><summary>归母净资产 802.48亿元（同比+35.8%）</summary><div class="body"><p>净资产快速增长，杠杆率保持低位，财务结构稳健。</p></div></details>
+      </div>
+    </details>
+  </div>
+
+  <div class="tree" style="margin-top:20px;">
+    <div class="root">康龙化成 ROE = 11.03%（期末口径；东财加权11.60%）</div>
+    <div class="f"><span>净利率 11.03%</span><span>×</span><span>总资产周转率 52.023</span><span>×</span><span>权益乘数 1.721</span></div>
+    <details open>
+      <summary>盈利能力：净利率 11.03% —— 主要拖累因素</summary>
+      <div class="body">
+        <details class="l2"><summary>分子：净利润 16.64亿元（同比-7.2%）</summary>
+          <div class="body"><p>扣非净利润15.38亿元（+38.8%）实现增长，但归母净利润下滑，主因：①汇兑损失及利息费用上升；②股权激励费用增加；③部分业务毛利率承压。净利率从2024年13.96%降至11.03%。</p></div>
+        </details>
+        <details class="l2"><summary>分母：营业收入 140.95亿元（+14.8%）</summary>
+          <div class="body"><p>实验室服务与CMC业务为主要增长引擎，临床研究服务逐步修复。</p></div>
+        </details>
+      </div>
+    </details>
+    <details>
+      <summary>资产效率：总资产周转率 52.023（边际改善）</summary>
+      <div class="body">
+        <details class="l2"><summary>分子：营业收入 140.95亿元</summary><div class="body"><p>见净利率分解。</p></div></details>
+        <details class="l2"><summary>分母：期末总资产 270.94亿元（同比+13.2%）</summary><div class="body"><p>收入增速快于资产增速，周转率由0.49升至0.55次。</p></div></details>
+      </div>
+    </details>
+    <details>
+      <summary>财务杠杆：权益乘数 1.721</summary>
+      <div class="body">
+        <details class="l2"><summary>总资产 270.94亿元</summary><div class="body"><p>见上文。</p></div></details>
+        <details class="l2"><summary>归母净资产 157.39亿元（同比+10.7%）</summary><div class="body"><p>资产负债率41.91%，杠杆水平高于药明，但2025年流动比率低于1，短期流动性承压。</p></div></details>
+      </div>
+    </details>
+  </div>
+
+  <p class="src">注：杜邦三因子按期末口径测算（净利率=净利润/营业收入；周转率=营业收入/期末总资产；权益乘数=期末总资产/期末归母净资产），与东财加权ROE口径存在细微差异。</p>
+</div>
+
+<!-- ============ 六、利润变动归因 ============ -->
+<h2 id="attr">六、ROE变动三因素归因（2024 → 2025）</h2>
+<div class="sec">
+  <p>运用连环替代法，将两家公司2025年较2024年ROE变动分解为<strong>净利率贡献、总资产周转率贡献、权益乘数贡献</strong>三部分，直观判断ROE变动的驱动来源。</p>
+  <div id="chartAttr" class="chart"></div>
+  <div class="concl">
+    <b>药明康德：</b>ROE由1619.3%（期末口径）变动至28.56%（东财加权），其中净利率贡献<b>+1205.39个百分点</b>（主导因素，主要源于非经常性收益），周转率贡献-275.94个百分点，权益乘数贡献-139.58个百分点（杠杆下降小幅拖累）。<br>
+    <b>康龙化成：</b>ROE由1205.21%（期末口径）变动至11.60%（东财加权），其中净利率贡献<b>-252.91个百分点</b>（主要拖累，反映盈利质量下滑），总资产周转率贡献+13.35个百分点（正向），权益乘数贡献+22.49个百分点。
+  </div>
+  <p class="src">注：期末口径三因子连环替代测算，用于趋势归因，与东财加权ROE绝对值略有差异。</p>
+</div>
+
+<!-- ============ 七、综合结论 ============ -->
+<h2 id="concl">七、综合结论与建议</h2>
+<div class="sec">
+  <h3>7.1 总体定位：龙头 vs 追赶者</h3>
+  <p>药明康德2025年收入规模约为康龙化成的3.2倍（454.6亿 vs 141.0亿），归母净利润约11.5倍，是行业公认的全球CXO龙头；康龙化成则是收入体量排名靠前的一体化平台“追赶者”。2025年在行业回暖背景下，两家收入均恢复双位数增长，但利润表现分化：药明依靠非经常收益实现净利翻倍，康龙归母净利小幅下滑而扣非净利高增38.8%。</p>
+  <h3>7.2 分维度评价</h3>
+  <ul>
+    <li><b>盈利能力：</b>药明毛利率、净利率、ROE全面占优，一体化平台议价能力强；2025年净利率跳升由非经常收益驱动，不可持续，应关注其扣非口径（净利率约29%）；康龙盈利能力中等偏弱，毛利率小幅下滑，盈利修复依赖产能利用率回升。</li>
+    <li><b>偿债能力：</b>药明低杠杆、高现金，财务结构极稳健；康龙资产负债率约42%、流动比率0.93低于1，短期流动性偏紧，需关注资本开支与债务到期安排。</li>
+    <li><b>营运能力：</b>康龙存货与总资产周转效率更高，资产使用更高效；药明现金充裕但资产周转偏慢，资金使用效率有提升空间。</li>
+    <li><b>成长能力：</b>两者2025年收入均恢复双位数增长，行业拐点初步确认；药明体量大、增长确定性高，康龙基数小、弹性更大。</li>
+  </ul>
+  <h3>7.3 综合研判</h3>
+  <div class="concl">整体看，<b>药明康德</b>属于“高盈利、高确定性、低杠杆”的行业龙头，防御性更强，适合关注其全球一体化平台壁垒与现金流质量，同时需甄别非经常性收益对利润的干扰；<b>康龙化成</b>属于“高成长、高营运效率、正在修复”的成长型平台，弹性更大，适合关注其产能利用率回升、订单回暖与流动性改善的兑现节奏。两者均受益于CXO行业供给出清后景气度回升的中长期趋势，亦共同面对地缘政治、产能过剩与价格竞争等系统性风险。</div>
+  <h3>7.4 主要风险因素</h3>
+  <ul>
+    <li><b>地缘政治与政策风险：</b>美国《生物安全法案》相关立法动态若持续发酵，可能限制部分药企与中资背景CXO企业的合作，直接影响海外订单；药明康德海外收入占比长期约八成，对该风险的敞口更大，这也是其近两年估值与订单预期反复波动的重要背景。</li>
+    <li><b>订单与产能匹配风险：</b>行业经历供给出清后头部企业产能利用率逐步回升，但若下游创新药融资环境再度收紧，新签订单可能不及预期；康龙化成处于产能扩建期，资本开支与折旧摊销高企，若产能爬坡慢于预期，将侵蚀利润并推高资产负债率。</li>
+    <li><b>汇率波动风险：</b>两家公司收入以外币结算为主，人民币汇率波动直接影响毛利率与汇兑损益。2025年康龙化成归母净利润下滑即部分受到汇兑损失与利息费用上升的拖累，印证了汇率对报表利润的显著影响。</li>
+    <li><b>商誉与资产减值风险：</b>两家公司历史上均有外延并购布局，若被并购标的经营不及预期，存在商誉减值风险，将直接影响当期报表利润质量。</li>
+  </ul>
+  <h3>7.5 免责声明</h3>
+  <p class="src">本报告财务数据均来源于东方财富数据中心公开的上市公司定期财务数据接口（其数据源自沪深交易所披露的上市公司年报），指标为基于公开数据的测算，仅用于课堂教学与研究分析，不构成任何投资建议。部分口径（如期末口径周转率、期末口径ROE）与专业机构可能有细微差异。</p>
+</div>
+
+<!-- ============ 附录一 半年报 ============ -->
+<h2 id="app1">附录一 · 2026年半年报再分析</h2>
+<div class="appendix">
+  <p>本附录对两家公司最新披露的<b>2026年半年报</b>（报告期截至2026-06-30）进行补充分析。<b>药明康德</b>2026年8月4日披露2026年中报，2026年上半年实现营业收入289.0亿元，同比增长38.9%；归母净利润110.8亿元，同比增长29.4%；扣非净利润105.7亿元，同比增长89.4%；毛利率53.91%、净利率38.5%、加权ROE 13.19%。<b>康龙化成</b>2026年8月21日披露2026年中报，上半年营业收入76.0亿元，同比增长17.9%；归母净利润7.5亿元，同比增长7.0%；扣非净利润6.9亿元，同比增长8.9%；毛利率32.71%、净利率9.37%、加权ROE 4.61%。</p>
+  <div class="note"><b>简要点评：</b>2026年上半年CXO行业回暖趋势延续。药明康德收入、利润均保持较高增速，扣非口径增速89.4%，经营质量改善；康龙化成收入保持两位数增长、归母净利润低个位数增长，盈利端仍在修复通道。两家公司的收入增长验证了行业景气度回升的判断，后续需继续跟踪海外订单、产能利用率与地缘政策变化。</div>
+  <p class="src">数据来源：<a href="https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=SH603259">药明康德2026半年报（F10）</a> ｜ <a href="https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=SZ300759">康龙化成2026半年报（F10）</a></p>
+</div>
+
+<!-- ============ 附录二 分工 ============ -->
+<h2 id="app2">附录二 · 小组成员分工说明</h2>
+<div class="appendix">
+  <table>
+    <tr><th>序号</th><th>姓名</th><th>学号</th><th>负责内容 / 工作贡献</th></tr>
+    <tr><td>1</td><td>何佳园</td><td>24117030124</td><td>数据收集与整理：从东方财富F10提取两家公司2020-2025年报及2026中报财务数据，构建数据底稿</td></tr>
+    <tr><td>2</td><td>陈嘉慧</td><td>24117031041</td><td>财务分析：撰写盈利能力、偿债能力、营运能力、成长能力四大能力分析及杜邦分析文字</td></tr>
+    <tr><td>3</td><td>陈芊芊</td><td>24117031037</td><td>可视化与页面制作：基于ECharts构建交互图表、杜邦展开树、利润归因瀑布图并完成网页部署</td></tr>
+  </table>
+  <p class="src">说明：本报告由3人小组协作完成，分工如上。全部财务数据来源已在正文各图表下方标注，可在浏览器中点击链接跳转验证原始数据。</p>
+</div>
+
+<!-- ============ 附录三 诚信说明 ============ -->
+<h2 id="app3">附录三 · 诚信说明（AI使用说明）</h2>
+<div class="appendix">
+  <p>本报告为《基于HTML的财务报告分析可视化》课程作业，小组成员共同完成。现就使用AI工具的情况作出如下诚信说明：</p>
+  <ul>
+    <li><b>使用的AI工具：</b>本报告在数据整理、分析框架构建、可视化页面（HTML+ECharts）编写过程中，使用了AI编程助手（Trae）辅助完成。</li>
+    <li><b>数据来源声明：</b>本报告全部财务数据均来源于公开一手数据渠道——东方财富数据中心（F10财务分析，链接见正文附录及图表下方），其数据源自沪深交易所披露的药明康德（603259）、康龙化成（300759）年度报告与半年度报告。所有关键数据均已在正文标注来源网址，可通过点击链接进行核验。宏观与行业数据来源已分别标注。</li>
+    <li><b>原创性声明：</b>本报告的分析结论、文字表述由小组成员在AI辅助下撰写并校对，AI生成的数据与分析内容均经人工核验。我们承诺报告内容真实、数据可溯源，无抄袭、无虚构。</li>
+    <li><b>使用说明：</b>AI主要承担数据处理、图表代码生成与排版工作；财务分析的判断、结论与文字由小组成员主导完成。</li>
+  </ul>
+  <p>小组成员签名（手写）与学号：</p>
+  <div class="sign">
+    <span>签名1 / 学号</span>
+    <span>签名2 / 学号</span>
+    <span>签名3 / 学号</span>
+  </div>
+</div>
+
+<footer class="foot">
+  药明康德(603259) · 康龙化成(300759) 财务报告对比分析（2020-2025年报 + 2026半年报附录）· 课程作业<br>
+  数据来源：东方财富数据中心 · 巨潮资讯网 · 上市公司定期报告
+</footer>
+
+</div>
+
+<script>
+
+const YEARS=["2020", "2021", "2022", "2023", "2024", "2025"], revW=[165.35, 229.02, 393.55, 403.41, 392.41, 454.56], revK=[51.34, 74.44, 102.66, 115.38, 122.76, 140.95], npW=[29.6, 50.97, 88.14, 96.07, 94.5, 191.51], npK=[11.72, 16.61, 13.75, 16.01, 17.93, 16.64];
+const dnpW=[23.85, 41.19, 83.45, 97.48, 99.88, 132.41], dnpK=[8.01, 13.41, 14.21, 15.14, 11.08, 15.38], gmW=[37.99, 36.28, 37.3, 41.18, 41.48, 47.64], gmK=[37.47, 35.99, 36.71, 35.75, 34.24, 34.83], nmW=[18.06, 22.43, 22.62, 24.05, 24.38, 42.53], nmK=[22.34, 21.76, 13.17, 13.71, 13.96, 11.03];
+const roeW=[12.91, 14.05, 20.62, 18.99, 16.78, 28.56], roeK=[14.13, 17.31, 13.28, 13.91, 13.7, 11.6], drW=[29.32, 29.69, 27.46, 24.64, 26.44, 22.18], drK=[24.98, 44.01, 47.1, 50.0, 40.56, 41.91], crW=[2.91, 1.69, 1.66, 2.06, 2.38, 3.21], crK=[2.8, 2.9, 1.67, 2.98, 1.8, 0.93];
+const toW=[0.44, 0.45, 0.66, 0.58, 0.51, 0.5], toK=[0.47, 0.49, 0.53, 0.49, 0.49, 0.55], itW=[3.83, 2.95, 3.68, 3.74, 3.72, 3.0], itK=[9.7, 7.39, 5.78, 5.33, 5.41, 5.23];
+const grW=[28.46, 38.5, 71.84, 2.51, -2.73, 15.84], grK=[36.64, 45.0, 37.92, 12.39, 6.39, 14.82], gnW=[59.62, 72.19, 72.91, 9.0, -1.63, 102.65], gnK=[114.25, 41.68, -17.24, 16.48, 12.01, -7.22];
+
+const WU='药明康德', KL='康龙化成';
+const CW='#1f5bb3', CK='#2f9e6e', CA='#c0392b', CG='#e6a23c';
+function mk(id,opt){echarts.init(document.getElementById(id)).setOption(opt);}
+function axisOpt(x){return {tooltip:{trigger:'axis'},legend:{top:4},grid:{left:50,right:20,top:38,bottom:34},xAxis:{type:'category',data:x},yAxis:{type:'value'}};}
+
+mk('chartScale',Object.assign(axisOpt(YEARS),{series:[
+  {name:WU+'营收',type:'bar',barWidth:14,data:revW,color:CW},
+  {name:KL+'营收',type:'bar',barWidth:14,data:revK,color:CK},
+  {name:WU+'归母净利',type:'line',data:npW,color:CA,smooth:true},
+  {name:KL+'归母净利',type:'line',data:npK,color:CG,smooth:true}
+]}));
+
+mk('chartProfit',Object.assign(axisOpt(YEARS),{series:[
+  {name:WU+'毛利率%',type:'line',data:gmW,color:CW,smooth:true,lineStyle:{width:3}},
+  {name:KL+'毛利率%',type:'line',data:gmK,color:CK,smooth:true,lineStyle:{width:3}},
+  {name:WU+'净利率%',type:'line',data:nmW,color:CA,smooth:true,lineStyle:{type:'dashed'}},
+  {name:KL+'净利率%',type:'line',data:nmK,color:CG,smooth:true,lineStyle:{type:'dashed'}}
+]}));
+
+mk('chartRoe',Object.assign(axisOpt(YEARS),{series:[
+  {name:WU+'ROE%',type:'bar',barWidth:16,data:roeW,color:CW},
+  {name:KL+'ROE%',type:'bar',barWidth:16,data:roeK,color:CK}
+]}));
+
+mk('chartSolvency',{tooltip:{trigger:'axis'},legend:{top:4},grid:{left:50,right:55,top:38,bottom:34},
+  xAxis:{type:'category',data:YEARS},yAxis:[{type:'value',name:'资产负债率%'},{type:'value',name:'流动比率',min:0}],
+  series:[
+    {name:WU+'资产负债率%',type:'bar',barWidth:14,data:drW,color:CW},
+    {name:KL+'资产负债率%',type:'bar',barWidth:14,data:drK,color:CK},
+    {name:WU+'流动比率',type:'line',yAxisIndex:1,data:crW,color:CA,smooth:true},
+    {name:KL+'流动比率',type:'line',yAxisIndex:1,data:crK,color:CG,smooth:true}
+  ]});
+
+mk('chartOpr',Object.assign(axisOpt(YEARS),{series:[
+  {name:WU+'总资产周转率',type:'bar',barWidth:14,data:toW,color:CW},
+  {name:KL+'总资产周转率',type:'bar',barWidth:14,data:toK,color:CK},
+  {name:WU+'存货周转率',type:'line',data:itW,color:CA,smooth:true},
+  {name:KL+'存货周转率',type:'line',data:itK,color:CG,smooth:true}
+]}));
+
+mk('chartGrowth',Object.assign(axisOpt(YEARS),{series:[
+  {name:WU+'营收增速%',type:'bar',barWidth:12,data:grW,color:CW},
+  {name:KL+'营收增速%',type:'bar',barWidth:12,data:grK,color:CK},
+  {name:WU+'净利增速%',type:'line',data:gnW,color:CA,smooth:true},
+  {name:KL+'净利增速%',type:'line',data:gnK,color:CG,smooth:true}
+]}));
+
+mk('chartAttr',{tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},legend:{top:4},
+  grid:{left:60,right:20,top:38,bottom:34},xAxis:{type:'category',data:['2024 ROE','净利率贡献','周转率贡献','乘数贡献','2025 ROE'],splitLine:{show:false}},
+  yAxis:{type:'value',name:'ROE(%)'},
+  series:[{type:'waterfall',data:[1619.3,1205.39,-275.94,-139.58,28.56],
+    itemStyle:{color:function(p){return p.dataIndex===0?'#7f8fa6':(p.dataIndex===4?'#1f5bb3':(p.value>=0?'#2f9e6e':'#c0392b'));}}
+  }]});
+</script>
+</body>
+</html>
