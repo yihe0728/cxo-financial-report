@@ -24,8 +24,8 @@
   p{margin:9px 0;text-align:justify;}
   .sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:14px 0;}
   .chart{width:100%;height:380px;margin:12px 0;}
-  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 9px;text-align:center;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:center;line-height:1.6;word-break:break-word;}
   th{background:#e8eef8;font-weight:600;}
   td.l{text-align:left;}
   tr:nth-child(even) td{background:#fafcff;}
@@ -287,8 +287,8 @@
   <p>运用连环替代法，将两家公司2025年较2024年ROE变动分解为<strong>净利率贡献、总资产周转率贡献、权益乘数贡献</strong>三部分，直观判断ROE变动的驱动来源。</p>
   <div id="chartAttr" class="chart"></div>
   <div class="concl">
-    <b>药明康德：</b>ROE由1619.3%（期末口径）变动至28.56%（东财加权），其中净利率贡献<b>+1205.39个百分点</b>（主导因素，主要源于非经常性收益），周转率贡献-275.94个百分点，权益乘数贡献-139.58个百分点（杠杆下降小幅拖累）。<br>
-    <b>康龙化成：</b>ROE由1205.21%（期末口径）变动至11.60%（东财加权），其中净利率贡献<b>-252.91个百分点</b>（主要拖累，反映盈利质量下滑），总资产周转率贡献+13.35个百分点（正向），权益乘数贡献+22.49个百分点。
+    <b>药明康德：</b>ROE由16.19%（期末口径）变动至24.09%（期末口径），其中净利率贡献<b>+12.05个百分点</b>（主导因素，主要源于非经常性收益），周转率贡献-2.76个百分点，权益乘数贡献-1.4个百分点（杠杆下降小幅拖累）。<br>
+    <b>康龙化成：</b>ROE由12.05%（期末口径）变动至9.88%（期末口径），其中净利率贡献<b>-2.53个百分点</b>（主要拖累，反映盈利质量下滑），总资产周转率贡献+0.13个百分点（正向），权益乘数贡献+0.22个百分点。
   </div>
   <p class="src">注：期末口径三因子连环替代测算，用于趋势归因，与东财加权ROE绝对值略有差异。</p>
 </div>
@@ -350,9 +350,9 @@
   </ul>
   <p>小组成员签名（手写）与学号：</p>
   <div class="sign">
-    <span>签名1 / 学号</span>
-    <span>签名2 / 学号</span>
-    <span>签名3 / 学号</span>
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
 </div>
 
@@ -432,7 +432,7 @@ mk('chartGrowth',Object.assign(axisOpt(YEARS),{series:[
 mk('chartAttr',{tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},legend:{top:4},
   grid:{left:60,right:20,top:38,bottom:34},xAxis:{type:'category',data:['2024 ROE','净利率贡献','周转率贡献','乘数贡献','2025 ROE'],splitLine:{show:false}},
   yAxis:{type:'value',name:'ROE(%)'},
-  series:[{type:'waterfall',data:[1619.3,1205.39,-275.94,-139.58,28.56],
+  series:[{type:'waterfall',data:[16.19,12.05,-2.76,-1.4,24.09],
     itemStyle:{color:function(p){return p.dataIndex===0?'#7f8fa6':(p.dataIndex===4?'#1f5bb3':(p.value>=0?'#2f9e6e':'#c0392b'));}}
   }]});
 
@@ -503,19 +503,26 @@ function duNodeList(){ const out=[]; const walk=(id,par,depth)=>{ out.push({id,p
   walk('roe',null,0); return out; }
 function duLayout(){
   const ns=duNodeList(), ids=new Set(ns.map(n=>n.id));
-  const pos={}; let leaf=0;
-  const assign=id=>{ const ks=(DU_KIDS[id]||[]).filter(k=>ids.has(k));
-    if(DU.expanded.has(id)&&ks.length){ let a=null,b=null; ks.forEach(k=>{assign(k); if(a===null)a=pos[k]; b=pos[k]; }); pos[id]=(a+b)/2; }
-    else pos[id]=leaf++; };
-  assign('roe');
-  return ns.map(n=>({id:n.id,par:n.par,depth:n.depth,x:pos[n.id],y:n.depth}));
+  const pos={}; let v=0;
+  const place=id=>{ const ks=(DU_KIDS[id]||[]).filter(k=>ids.has(k));
+    if(DU.expanded.has(id)&&ks.length){ let lo=Infinity,hi=-Infinity;
+      ks.forEach(k=>{ place(k); lo=Math.min(lo,pos[k].lo); hi=Math.max(hi,pos[k].hi); });
+      pos[id]={lo:lo,hi:hi,y:(lo+hi)/2*GY}; }
+    else { const i=v++; pos[id]={lo:i,hi:i+1,y:(i+0.5)*GY}; } };
+  place('roe');
+  const depth={}; (function dep(id,d){ depth[id]=d; if(DU.expanded.has(id)) (DU_KIDS[id]||[]).forEach(k=>{ if(ids.has(k)) dep(k,d+1); }); })('roe',0);
+  return ns.map(n=>({id:n.id,par:n.par,depth:depth[n.id]||0,x:depth[n.id]*GX,y:pos[n.id].y}));
 }
-/* ---------- SVG 渲染 ---------- */
+/* ---------- SVG 渲染（思维导图式：卡片节点 + 横向贝塞尔连线，树向右生长） ---------- */
 const duSvg=document.getElementById('duSvg'), duZoom=document.getElementById('duZoom'),
       duLinks=document.getElementById('duLinks'), duNodes=document.getElementById('duNodes'),
       duTip=document.getElementById('duTip'), duView=document.getElementById('duViewport');
-const XS=150, YS=108;
+const CARD_W=196, CARD_H=98, GX=262, GY=78;
 function duApplyT(){ duZoom.setAttribute('transform','translate('+DU.t.x+','+DU.t.y+') scale('+DU.t.k+')'); }
+function duText(x,y,s,attrs){ const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',x); t.setAttribute('y',y);
+  Object.keys(attrs||{}).forEach(k=>t.setAttribute(k,attrs[k]));
+  t.textContent=s; return t; }
 function duRender(){
   const ns=duLayout(), L=duCalc();
   const ids=new Set(ns.map(n=>n.id));
@@ -524,30 +531,31 @@ function duRender(){
   duLinks.innerHTML=''; duNodes.innerHTML='';
   ns.forEach(n=>{
     const v=duVal(L,n), c=L.C[n.id]||0, rel=maxA>0.001?Math.abs(c)/maxA:0;
-    const fill=colOf(c), op=0.20+0.62*Math.min(rel,1);
+    const fill=colOf(c), op=0.16+0.66*Math.min(rel,1), dark=duDir(c)==='neu';
     const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('transform','translate('+((n.x+0.5)*XS)+','+(n.y*YS+8)+')');
-    const w=n.id==='roe'?180:150, h=n.id==='roe'?58:48;
-    g.setAttribute('class','du-node');
-    g.dataset.id=n.id;
+    g.setAttribute('transform','translate('+n.x+','+n.y+')');
+    g.setAttribute('class','du-node'); g.dataset.id=n.id;
     const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',-w/2); r.setAttribute('y',-h/2); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx',10);
+    r.setAttribute('width',CARD_W); r.setAttribute('height',CARD_H); r.setAttribute('rx',9);
     r.setAttribute('fill',fill); r.setAttribute('fill-opacity',op);
-    r.setAttribute('stroke', fill); r.setAttribute('stroke-width', DU.selected===n.id?2.5:1);
-    const t1=document.createElementNS('http://www.w3.org/2000/svg','text');
-    t1.setAttribute('y', n.id==='roe'?-6:-4); t1.setAttribute('text-anchor','middle');
-    t1.setAttribute('font-size', n.id==='roe'?17:14); t1.setAttribute('font-weight','700');
-    t1.setAttribute('fill', duDir(c)==='neu'?'#33415c':'#ffffff');
-    t1.textContent=DU_DEF[n.id].label;
-    const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
-    t2.setAttribute('y', n.id==='roe'?16:14); t2.setAttribute('text-anchor','middle');
-    t2.setAttribute('font-size', n.id==='roe'?13:11.5); t2.setAttribute('fill', duDir(c)==='neu'?'#5b6b84':'rgba(255,255,255,.92)');
-    t2.textContent=duFmt(v.v1,v.u)+'  '+duDelta(v.v0,v.v1,v.u);
-    const t3=document.createElementNS('http://www.w3.org/2000/svg','text');
-    t3.setAttribute('y', n.id==='roe'?34:30); t3.setAttribute('text-anchor','middle');
-    t3.setAttribute('font-size',10); t3.setAttribute('fill', duDir(c)==='neu'?'#8a94a6':'rgba(255,255,255,.75)');
-    t3.textContent='ΔROE贡献 '+ (c>=0?'+':'') + c.toFixed(2) + 'pp';
-    g.appendChild(r); g.appendChild(t1); g.appendChild(t2); g.appendChild(t3);
+    r.setAttribute('stroke',fill); r.setAttribute('stroke-width', DU.selected===n.id?3:1.4);
+    const ac=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    ac.setAttribute('x',0); ac.setAttribute('y',0); ac.setAttribute('width',4); ac.setAttribute('height',CARD_H); ac.setAttribute('rx',2);
+    ac.setAttribute('fill',fill); ac.setAttribute('fill-opacity',0.95);
+    g.appendChild(r); g.appendChild(ac);
+    g.appendChild(duText(14,17,'L'+(DU_LVL[n.id]||'1')+' · '+(n.id==='roe'?'杜邦根节点':'杜邦分解'),{'font-size':10,'fill':dark?'#8a94a6':'rgba(255,255,255,.8)','font-weight':'600'}));
+    g.appendChild(duText(14,37,DU_DEF[n.id].label,{'font-size':n.id==='roe'?17:15,'font-weight':'700','fill':dark?'#33415c':'#ffffff'}));
+    g.appendChild(duText(14,63,duFmt(v.v1,v.u),{'font-size':18,'font-weight':'700','fill':dark?'#1f5bb3':'#ffffff'}));
+    g.appendChild(duText(14,80,DU.bY+':'+duFmt(v.v0,v.u)+' → '+DU.cY+':'+duFmt(v.v1,v.u),{'font-size':10.5,'fill':dark?'#5b6b84':'rgba(255,255,255,.88)'}));
+    g.appendChild(duText(14,96,'ΔROE贡献 '+(c>=0?'+':'')+c.toFixed(2)+'pp'+(Math.abs(L.dR)>0.01?' · 占ΔROE '+(Math.abs(c)/Math.abs(L.dR)*100).toFixed(0)+'%':''),{'font-size':11.5,'font-weight':'700','fill':dark?'#5b6b84':'rgba(255,255,255,.92)'}));
+    if(DU_KIDS[n.id]&&DU_KIDS[n.id].length){
+      const open=DU.expanded.has(n.id);
+      const hb=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      hb.setAttribute('x',CARD_W-26); hb.setAttribute('y',8); hb.setAttribute('width',18); hb.setAttribute('height',18); hb.setAttribute('rx',4);
+      hb.setAttribute('fill',dark?'#e8eef8':'rgba(255,255,255,.25)'); hb.setAttribute('stroke',dark?'#c3cddb':'rgba(255,255,255,.6)'); hb.setAttribute('stroke-width',1);
+      g.appendChild(hb);
+      g.appendChild(duText(CARD_W-17,21,open?'−':'+',{'text-anchor':'middle','font-size':14,'font-weight':'700','fill':dark?'#1f5bb3':'#ffffff'}));
+    }
     g.addEventListener('click', ev=>{ ev.stopPropagation(); duSelect(n.id); });
     g.addEventListener('dblclick', ev=>{ ev.stopPropagation(); DU.expanded.add('roe'); duFocus(n.id); });
     g.addEventListener('mousemove', ev=>{ const b=duView.getBoundingClientRect(); duTip.style.left=(ev.clientX-b.left+14)+'px'; duTip.style.top=(ev.clientY-b.top+14)+'px'; duTip.style.opacity=1;
@@ -555,10 +563,12 @@ function duRender(){
     g.addEventListener('mouseleave', ()=>{ duTip.style.opacity=0; });
     duNodes.appendChild(g);
     if(n.par){ const p=ns.find(m=>m.id===n.par); const l=document.createElementNS('http://www.w3.org/2000/svg','path');
-      const x1=(p.x+0.5)*XS, y1=p.y*YS+8+p.kx, x2=(n.x+0.5)*XS, y2=n.y*YS+8;
-      l.setAttribute('d','M'+x1+' '+y1+' C '+x1+' '+(y1+28)+', '+x2+' '+(y2-28)+', '+x2+' '+y2);
-      l.setAttribute('fill','none'); l.setAttribute('stroke', colOf(L.C[n.id]||0)); l.setAttribute('stroke-width', 1.6);
-      l.setAttribute('stroke-opacity', 0.55); duLinks.appendChild(l); }
+      const x1=p.x+CARD_W, y1=p.y+CARD_H/2, x2=n.x, y2=n.y+CARD_H/2;
+      const bend=Math.max(26,(x2-x1)/2);
+      l.setAttribute('d','M'+x1+' '+y1+' C '+(x1+bend)+' '+y1+', '+(x2-bend)+' '+y2+', '+x2+' '+y2);
+      l.setAttribute('fill','none'); l.setAttribute('stroke', colOf(L.C[n.id]||0));
+      l.setAttribute('stroke-width', 1+Math.min(Math.abs(c)*0.06, 2.6));
+      l.setAttribute('stroke-opacity', 0.6); duLinks.appendChild(l); }
   });
   duApplyT();
   duUpdateRail(L, ns);
@@ -569,13 +579,13 @@ function duSelect(id){ DU.selected=id;
 }
 function duFocus(id){ const ns=duLayout(); const n=ns.find(m=>m.id===id); if(!n) return;
   const w=duView.clientWidth, h=duView.clientHeight;
-  DU.t.k=1.15; DU.t.x=w/2-(n.x+0.5)*XS*DU.t.k; DU.t.y=h/2-(n.y*YS+20)*DU.t.k; duApplyT(); }
-function duFit(){ const ns=duLayout(); let minX=1e9,maxX=-1e9,maxY=0;
-  ns.forEach(n=>{ minX=Math.min(minX,(n.x+0.5)*XS); maxX=Math.max(maxX,(n.x+0.5)*XS); maxY=Math.max(maxY,n.y*YS+8); });
-  const w=duView.clientWidth-40, h=duView.clientHeight-40, bw=(maxX-minX)+190, bh=maxY+70;
-  DU.t.k=Math.min(w/bw, h/bh, 1.4); if(DU.t.k<0.4) DU.t.k=0.4;
+  DU.t.k=1.25; DU.t.x=w/2-(n.x+CARD_W/2)*DU.t.k; DU.t.y=h/2-(n.y+CARD_H/2)*DU.t.k; duApplyT(); }
+function duFit(){ const ns=duLayout(); let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;
+  ns.forEach(n=>{ minX=Math.min(minX,n.x); maxX=Math.max(maxX,n.x+CARD_W); minY=Math.min(minY,n.y); maxY=Math.max(maxY,n.y+CARD_H); });
+  const w=duView.clientWidth-40, h=duView.clientHeight-40, bw=(maxX-minX)+80, bh=(maxY-minY)+80;
+  DU.t.k=Math.min(w/bw, h/bh, 1.25); if(DU.t.k<0.25) DU.t.k=0.25;
   DU.t.x=(duView.clientWidth-bw*DU.t.k)/2-minX*DU.t.k;
-  DU.t.y=(duView.clientHeight-bh*DU.t.k)/2;
+  DU.t.y=(duView.clientHeight-bh*DU.t.k)/2-minY*DU.t.k;
   duApplyT();
 }
 /* ---------- 画布交互：拖拽平移 / 滚轮缩放 ---------- */
@@ -628,8 +638,13 @@ function duSetCur(v){ if(parseInt(v)<=parseInt(DU.bY)) return; DU.cY=v; duRebuil
 function duPlay(){
   if(DU.playing){ clearInterval(DU.playing); DU.playing=null; document.getElementById('duPlay').textContent='▶ 播放'; return; }
   document.getElementById('duPlay').textContent='⏸ 暂停';
-  DU.playing=setInterval(()=>{ const yrs=CXO_DATA[DU.company]&&Object.keys(CXO_DATA[DU.company].years).filter(y=>parseInt(y)>parseInt(DU.bY));
-    const i=yrs.indexOf(DU.cY); const nxt=yrs[(i+1)%yrs.length]; DU.cY=nxt; document.getElementById('duCur').value=nxt; duRebuild(); }, 900);
+  const yrs=Object.keys((CXO_DATA[DU.company]||{}).years||{}).sort((a,b)=>parseInt(a)-parseInt(b));
+  if(yrs.length<2){ document.getElementById('duPlay').textContent='▶ 播放'; return; }
+  DU.bY=yrs[0]; DU.cY=yrs[1];
+  document.getElementById('duBase').value=DU.bY; document.getElementById('duCur').value=DU.cY;
+  duRebuild();
+  DU.playing=setInterval(()=>{ const i=yrs.indexOf(DU.cY); const nxt=yrs[(i+1)%yrs.length];
+    DU.cY=nxt; document.getElementById('duCur').value=nxt; duRebuild(); }, 900);
 }
 function duExpandAll(){ DU.expanded=new Set(['roe','roa','npm','at','em','gm','ce','rev','avgA','avgA2','avgE']); duRender(); }
 function duCollapseAll(){ DU.expanded=new Set(['roe','roa','npm','at','em']); duRender(); }
@@ -657,7 +672,7 @@ function duSaveAi(){ const c={key:document.getElementById('aiKey').value.trim(),
   if(c.key) localStorage.setItem('du_ai_cfg', JSON.stringify(c));
   document.getElementById('aiOverlay').classList.add('hidden'); }
 /* ---------- 初始化 / 打印 ---------- */
-window.addEventListener('beforeprint', ()=>{ duExpandAll(); });
+window.addEventListener('beforeprint', ()=>{ duExpandAll(); duFit(); });
 window.addEventListener('afterprint', ()=>{ duRebuild(); });
 document.addEventListener('DOMContentLoaded', ()=>{
   const baseSel=document.getElementById('duBase'), curSel=document.getElementById('duCur');
