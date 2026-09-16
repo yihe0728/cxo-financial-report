@@ -9,12 +9,13 @@
   :root{--a:#1f5bb3;--b:#2f9e6e;--bg:#ffffff;--card:#f7f9fc;--line:#e3e8f0;--txt:#1c2430;--mut:#6b7686;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:var(--txt);line-height:1.8;font-size:15px;}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 20px 70px;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 20px 70px;}
   header{border-bottom:3px solid var(--a);padding:34px 0 22px;text-align:center;}
   header h1{font-size:27px;color:var(--a);letter-spacing:1px;}
   header .sub{color:var(--mut);margin-top:8px;font-size:14px;}
   .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
-  .badge{background:#eef3fb;color:var(--a);padding:4px 13px;border-radius:18px;font-size:12.5px;}
+  .badge{background:#eef3fb;color:var(--a);padding:4px 13px;border-radius:18px;font-size:12.5px;border:none;cursor:pointer;}
+  .badge.on{background:var(--a);color:#fff;}
   nav{position:sticky;top:0;background:#fff;z-index:50;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:8px;}
   nav a{display:inline-block;color:var(--mut);text-decoration:none;font-size:13px;margin:2px 10px;padding:3px 8px;border-radius:6px;}
   nav a:hover{color:var(--a);background:#eef3fb;}
@@ -42,19 +43,77 @@
   @media(max-width:760px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
   ul{margin:8px 0 8px 22px;}
   li{margin:5px 0;}
-  details{background:#fff;border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden;}
-  summary{cursor:pointer;padding:13px 18px;font-size:15px;font-weight:600;color:#fff;background:linear-gradient(90deg,var(--a),#3a7bd5);list-style:none;}
-  summary:hover{filter:brightness(1.05);}
-  summary::-webkit-details-marker{display:none;}
-  details .body{padding:16px 20px;}
-  details.l2 summary{background:#33507a;font-size:14px;}
-  .tree{background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:14px 18px;}
-  .tree .root{font-size:19px;font-weight:700;color:#c0392b;margin-bottom:4px;}
-  .tree .f{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--mut);margin-bottom:10px;}
   .foot{margin-top:50px;border-top:1px solid var(--line);padding-top:16px;text-align:center;color:var(--mut);font-size:13px;}
   .appendix{background:#fdfbf7;border:1px dashed #c9b98a;border-radius:12px;padding:18px 22px;margin:14px 0;}
   .sign{margin-top:14px;display:flex;gap:40px;flex-wrap:wrap;font-size:14px;}
   .sign span{border-top:1px solid #999;padding-top:6px;min-width:120px;text-align:center;}
+
+  /* ===== 杜邦因果拆解引擎 ===== */
+  .du-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;}
+  .du-tabs{display:flex;gap:4px;}
+  .du-tab{background:#eef3fb;color:var(--a);border:none;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;}
+  .du-tab.on{background:var(--a);color:#fff;}
+  .du-yr{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mut);}
+  .du-yr select{border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:13px;background:#fff;color:var(--txt);}
+  .du-chip{font-weight:700;padding:4px 12px;border-radius:16px;font-size:13.5px;}
+  .du-chip.ch-pos{background:#e6f5ee;color:#1f8a5f;}
+  .du-chip.ch-neg{background:#fdecea;color:#c0392b;}
+  .du-btn{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:13px;color:var(--mut);cursor:pointer;}
+  .du-btn:hover{color:var(--a);border-color:var(--a);}
+  .du-main{display:flex;gap:14px;margin:12px 0;}
+  .du-tree{flex:1;min-width:0;background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:10px;position:relative;}
+  #duViewport{width:100%;height:560px;overflow:hidden;cursor:grab;position:relative;}
+  #duViewport:active{cursor:grabbing;}
+  #duSvg{width:100%;height:100%;display:block;}
+  .du-node{cursor:pointer;}
+  .du-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--mut);padding:8px 4px 0;}
+  .du-legend b{margin-right:4px;}
+  .lg{display:inline-flex;align-items:center;gap:5px;}
+  .sw{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  .sw.pos{background:#1f8a5f;} .sw.neg{background:#c0392b;} .sw.neu{background:#8a94a6;}
+  #duTip{position:absolute;z-index:20;background:#1c2430;color:#eef3fb;border-radius:8px;padding:8px 12px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .12s;max-width:280px;}
+  #duTip b{display:block;margin-bottom:3px;color:#ffd479;}
+  #duTip span{display:block;}
+  .du-rail{width:330px;flex:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;max-height:560px;overflow:auto;}
+  .rl-h{font-size:16px;font-weight:700;color:#27405f;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .rl-lv{background:#eef3fb;color:var(--a);border-radius:10px;padding:1px 9px;font-size:11px;}
+  .rl-ctx{font-size:12px;color:var(--mut);margin-bottom:10px;}
+  .rl-blk{margin:10px 0;}
+  .rl-t{font-size:11.5px;color:var(--mut);font-weight:600;margin-bottom:3px;}
+  .rl-f{font-size:13.5px;background:#f4f7fb;border-radius:6px;padding:6px 9px;font-family:Consolas,monospace;}
+  .rl-num{font-size:14px;} .rl-num b{color:var(--a);} .rl-num em{color:var(--b);font-style:normal;font-weight:600;}
+  .rl-chip{display:inline-block;border-radius:12px;padding:3px 12px;font-weight:700;font-size:14px;}
+  .ch-pos{background:#e6f5ee;color:#1f8a5f;} .ch-neg{background:#fdecea;color:#c0392b;} .ch-neu{background:#eef1f6;color:#5b6b84;}
+  .rl-sub{font-size:12px;color:var(--mut);margin-top:3px;}
+  .rl-path{font-size:12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;}
+  .rl-path .pp{background:#f4f7fb;border-radius:6px;padding:2px 7px;color:#33415c;}
+  .rl-path .pp i{font-style:normal;color:var(--b);font-weight:600;}
+  .rl-path b{color:#b8c2d0;}
+  .rl-note{font-size:13px;color:#33415c;background:#f7f9fc;border-radius:6px;padding:7px 10px;}
+  .rl-ai{width:100%;margin-top:12px;background:linear-gradient(90deg,var(--a),#3a7bd5);color:#fff;border:none;border-radius:8px;padding:8px;font-size:13.5px;cursor:pointer;}
+  .ai-msg{font-size:12.5px;color:var(--mut);background:#f7f9fc;border-radius:6px;padding:7px 10px;margin-top:8px;white-space:pre-line;}
+  .ai-msg.ai-ok{color:#1f8a5f;background:#e6f5ee;}
+  .overlay{position:fixed;inset:0;background:rgba(20,28,40,.45);z-index:200;display:flex;align-items:center;justify-content:center;}
+  .overlay.hidden{display:none;}
+  .modal{background:#fff;border-radius:14px;width:440px;max-width:92vw;padding:20px;}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:12px;}
+  .modal .fld{display:block;font-size:13px;color:var(--mut);margin:10px 0;}
+  .modal .fld input{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;margin-top:4px;}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+  .modal-actions button{border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--txt);}
+  .modal-actions button.solid{background:var(--a);color:#fff;border-color:var(--a);}
+  @media(max-width:900px){.du-main{flex-direction:column;}.du-rail{width:100%;max-height:none;}}
+  @media print{
+    .no-print{display:none !important;}
+    nav{display:none;}
+    .du-main{display:block;}
+    .du-rail{width:100%;max-height:none;border:1px solid #ccc;page-break-inside:avoid;}
+    #duViewport{height:520px;}
+    .chart{height:300px;}
+    .sec,.appendix,table{page-break-inside:avoid;}
+    body{font-size:12px;}
+    a{color:inherit;text-decoration:none;}
+  }
 </style>
 </head>
 <body>
@@ -64,14 +123,15 @@
   <h1>药明康德(603259)  vs  康龙化成(300759)</h1>
   <p class="sub">CXO行业·医药研发及生产外包 · 2020-2025年度财务报告对比分析 · 课程作业</p>
   <div class="badges">
-    <span class="badge">六年趋势</span><span class="badge">四大能力分析</span><span class="badge">杜邦分析</span>
+    <span class="badge">六年趋势</span><span class="badge">四大能力分析</span><span class="badge">交互式杜邦因果拆解</span>
     <span class="badge">利润归因</span><span class="badge">2026半年报附录</span><span class="badge">数据来源可查</span>
+    <button class="badge no-print" onclick="window.print()">🖨 打印本页</button>
   </div>
 </header>
 
 <nav>
   <a href="#bg">背景</a><a href="#macro">宏观</a><a href="#ind">行业</a>
-  <a href="#fin">财务对比</a><a href="#dupont">杜邦分析</a><a href="#attr">利润归因</a>
+  <a href="#fin">财务对比</a><a href="#dupont">杜邦引擎</a><a href="#attr">利润归因</a>
   <a href="#concl">结论</a><a href="#app1">附录一</a><a href="#app2">附录二</a><a href="#app3">附录三</a>
 </nav>
 
@@ -129,7 +189,7 @@
     <tr><th rowspan="2">项目(亿元)</th><th colspan="6">药明康德</th><th colspan="6">康龙化成</th></tr>
     <tr><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr>
     <tr><td class="l">营业收入</td><td>165.35</td><td>229.02</td><td>393.55</td><td>403.41</td><td>392.41</td><td>454.56</td><td>51.34</td><td>74.44</td><td>102.66</td><td>115.38</td><td>122.76</td><td>140.95</td></tr>
-    <tr><td class="l">归母净利润</td><td>29.60</td><td>50.98</td><td>88.14</td><td>96.07</td><td>94.50</td><td>191.51</td><td>11.72</td><td>16.61</td><td>13.75</td><td>16.01</td><td>17.93</td><td>16.64</td></tr>
+    <tr><td class="l">归母净利润</td><td>29.60</td><td>50.97</td><td>88.14</td><td>96.07</td><td>94.50</td><td>191.51</td><td>11.72</td><td>16.61</td><td>13.75</td><td>16.01</td><td>17.93</td><td>16.64</td></tr>
     <tr><td class="l">扣非净利润</td><td>23.85</td><td>41.21</td><td>83.45</td><td>97.48</td><td>99.88</td><td>132.41</td><td>8.04</td><td>13.42</td><td>14.21</td><td>15.14</td><td>11.08</td><td>15.38</td></tr>
     <tr><td class="l">总资产</td><td>377.09</td><td>506.67</td><td>646.90</td><td>736.69</td><td>803.26</td><td>1031.21</td><td>109.02</td><td>151.65</td><td>204.93</td><td>264.77</td><td>239.27</td><td>270.94</td></tr>
   </table>
@@ -173,80 +233,52 @@
   <p>2020-2021年CXO高景气阶段两家收入增速均处高位；2022年药明因新冠大订单基数高企收入增速71.8%；2023-2024年行业进入去库存与订单调整期，增速明显放缓（药明2024年收入-2.7%）；2025年行业拐点初现，两家收入增速分别回升至15.8%和14.8%。利润端波动更大：药明2025年净利增速102.6%含非经常收益；康龙2025年净利-7.2%（受汇兑、股权激励费用及毛利率下滑影响）。</p>
 </div>
 
-<!-- ============ 五、杜邦分析 ============ -->
-<h2 id="dupont">五、杜邦分析（2025年度）</h2>
+<!-- ============ 五、杜邦分析（交互式引擎） ============ -->
+<h2 id="dupont">五、杜邦分析：交互式因果拆解引擎</h2>
 <div class="sec">
-  <p>杜邦分析将ROE分解为<strong>净利率 × 总资产周转率 × 权益乘数</strong>，从而把股东回报层层展开至公司经营与财务结构的各个角落。以下为两家公司2025年度杜邦三层分解（期末口径测算），点击各层可继续展开明细。</p>
+  <p>本节借鉴课堂演示的“杜邦因果拆解引擎”思路，将<strong>ROE 作为唯一终局变量</strong>逐层拆解，并支持<strong>切换公司、切换基准期/分析期</strong>，实时观察 ROE 变动的驱动因素。下方为可交互的因果树：<b>单击节点</b>展开/折叠因果链并联动右侧分析栏，<b>悬停</b>查看公式与数值，<b>拖拽</b>平移画布、<b>滚轮</b>缩放、<b>双击</b>聚焦节点；节点颜色表示该因素对 ΔROE 的贡献方向与大小（绿色=正向推动、红色=负向拖累、灰色=中性，颜色越深贡献越大）。点击「▶ 播放」可自动在时间轴上逐年推移，形成动态看板。</p>
+  <p><strong>口径与方法：</strong>ROE=归母净利润÷平均归母净资产；净利率=归母净利润÷营业收入；总资产周转率=营业收入÷平均总资产；权益乘数=平均总资产÷平均归母净资产，恒等式严格成立。ROE 变动在乘法链上采用<strong>连环替代法</strong>逐层归因，净利率内部采用<strong>加性拆解</strong>（净利率=毛利率−综合费用及税负率，其中综合费用及税负率含期间费用、税金及附加、所得税、其他损益与少数股东损益的净影响，由披露数据倒算），保证各层贡献加总恰好等于 ΔROE。</p>
 
-  <div class="kpi-grid">
-    <div class="kpi"><div class="n">药明康德 ROE(期末口径)</div><div class="v">42.53%</div><div class="d">净利率42.53% × 周转44.08 × 乘数1.285</div></div>
-    <div class="kpi"><div class="n">康龙化成 ROE(期末口径)</div><div class="v">11.03%</div><div class="d">净利率11.03% × 周转52.023 × 乘数1.721</div></div>
+  <div class="du-bar no-print">
+    <div class="du-tabs">
+      <button class="du-tab on" data-c="药明康德" onclick="duSetCompany('药明康德')">药明康德</button>
+      <button class="du-tab" data-c="康龙化成" onclick="duSetCompany('康龙化成')">康龙化成</button>
+    </div>
+    <div class="du-yr">基准期 <select id="duBase" onchange="duSetBase(this.value)"></select>
+      <span>→</span> 分析期 <select id="duCur" onchange="duSetCur(this.value)"></select></div>
+    <button class="du-btn" id="duPlay" onclick="duPlay()">▶ 播放</button>
+    <button class="du-btn" onclick="duExpandAll()">全部展开</button>
+    <button class="du-btn" onclick="duCollapseAll()">收起叶子</button>
+    <button class="du-btn" onclick="duFit()">重置视图</button>
+    <button class="du-btn" onclick="duOpenAi()">AI 设置</button>
+    <div class="du-chip" id="duRoeDelta">—</div>
+    <span id="duCtx" style="font-size:12px;color:var(--mut);"></span>
   </div>
 
-  <div class="tree">
-    <div class="root">药明康德 ROE = 42.53%（期末口径；东财加权28.56%）</div>
-    <div class="f"><span>净利率 42.53%</span><span>×</span><span>总资产周转率 44.08</span><span>×</span><span>权益乘数 1.285</span></div>
-    <details open>
-      <summary>盈利能力：净利率 42.53% —— 贡献最大因素</summary>
-      <div class="body">
-        <details class="l2"><summary>分子：净利润 191.51亿元（同比+102.6%，含大额非经常收益）</summary>
-          <div class="body"><p>扣非净利润132.41亿元（+32.6%）；归母与扣非差额约59亿元，主要来自处置参股企业股权、金融资产公允价值变动等非经常性收益，这是2025年净利率跳升的直接原因。</p></div>
-        </details>
-        <details class="l2"><summary>分母：营业收入 454.56亿元（+15.8%）</summary>
-          <div class="body"><p>化学业务、测试业务、生物学业务、高端治疗CTDMO业务协同增长，订单回暖带动收入修复。</p></div>
-        </details>
-        <p class="src">净利率=净利润/营业收入，东财口径。</p>
+  <div class="du-main">
+    <div class="du-tree">
+      <div id="duViewport">
+        <svg id="duSvg">
+          <defs><marker id="arrPos" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#9aa7bd"/></marker></defs>
+          <g id="duZoom"><g id="duLinks"></g><g id="duNodes"></g></g>
+        </svg>
+        <div id="duTip"></div>
       </div>
-    </details>
-    <details>
-      <summary>资产效率：总资产周转率 44.08</summary>
-      <div class="body">
-        <details class="l2"><summary>分子：营业收入 454.56亿元</summary><div class="body"><p>见净利率分解。</p></div></details>
-        <details class="l2"><summary>分母：期末总资产 1031.21亿元（同比+28.4%）</summary>
-          <div class="body"><p>2025年货币资金等流动资产大幅增加，资产扩张速度快于收入增速，摊薄了周转率。</p></div>
-        </details>
+      <div class="du-legend">
+        <b>颜色 = 对 ΔROE 的贡献</b>
+        <span class="lg"><i class="sw pos"></i>正向推动</span>
+        <span class="lg"><i class="sw neg"></i>负向拖累</span>
+        <span class="lg"><i class="sw neu"></i>中性</span>
       </div>
-    </details>
-    <details>
-      <summary>财务杠杆：权益乘数 1.285</summary>
-      <div class="body">
-        <details class="l2"><summary>总资产 1031.21亿元</summary><div class="body"><p>见上文。</p></div></details>
-        <details class="l2"><summary>归母净资产 802.48亿元（同比+35.8%）</summary><div class="body"><p>净资产快速增长，杠杆率保持低位，财务结构稳健。</p></div></details>
-      </div>
-    </details>
+    </div>
+    <aside class="du-rail" id="duRail"><p style="color:var(--mut);font-size:13px;">点击左侧树中任一节点，此处将展示其定义、公式、数值变化、对 ΔROE 的贡献与因果路径。</p></aside>
   </div>
 
-  <div class="tree" style="margin-top:20px;">
-    <div class="root">康龙化成 ROE = 11.03%（期末口径；东财加权11.60%）</div>
-    <div class="f"><span>净利率 11.03%</span><span>×</span><span>总资产周转率 52.023</span><span>×</span><span>权益乘数 1.721</span></div>
-    <details open>
-      <summary>盈利能力：净利率 11.03% —— 主要拖累因素</summary>
-      <div class="body">
-        <details class="l2"><summary>分子：净利润 16.64亿元（同比-7.2%）</summary>
-          <div class="body"><p>扣非净利润15.38亿元（+38.8%）实现增长，但归母净利润下滑，主因：①汇兑损失及利息费用上升；②股权激励费用增加；③部分业务毛利率承压。净利率从2024年13.96%降至11.03%。</p></div>
-        </details>
-        <details class="l2"><summary>分母：营业收入 140.95亿元（+14.8%）</summary>
-          <div class="body"><p>实验室服务与CMC业务为主要增长引擎，临床研究服务逐步修复。</p></div>
-        </details>
-      </div>
-    </details>
-    <details>
-      <summary>资产效率：总资产周转率 52.023（边际改善）</summary>
-      <div class="body">
-        <details class="l2"><summary>分子：营业收入 140.95亿元</summary><div class="body"><p>见净利率分解。</p></div></details>
-        <details class="l2"><summary>分母：期末总资产 270.94亿元（同比+13.2%）</summary><div class="body"><p>收入增速快于资产增速，周转率由0.49升至0.55次。</p></div></details>
-      </div>
-    </details>
-    <details>
-      <summary>财务杠杆：权益乘数 1.721</summary>
-      <div class="body">
-        <details class="l2"><summary>总资产 270.94亿元</summary><div class="body"><p>见上文。</p></div></details>
-        <details class="l2"><summary>归母净资产 157.39亿元（同比+10.7%）</summary><div class="body"><p>资产负债率41.91%，杠杆水平高于药明，但2025年流动比率低于1，短期流动性承压。</p></div></details>
-      </div>
-    </details>
-  </div>
+  <div class="note no-print"><b>平均口径说明：</b>引擎内 ROE 等指标采用“平均余额”口径（期初+期末÷2），与第四节东财披露的期末口径数值存在细微差异（如药明2025年期末ROE 28.56%，平均口径约27.5%），但归因方向与结论一致。净利率在引擎内为归母净利÷营收（药明2025年约42.13%），与东财披露的净利率口径略有差异，以保证杜邦恒等式严格成立。</div>
 
-  <p class="src">注：杜邦三因子按期末口径测算（净利率=净利润/营业收入；周转率=营业收入/期末总资产；权益乘数=期末总资产/期末归母净资产），与东财加权ROE口径存在细微差异。</p>
+  <div class="concl"><b>2025年度杜邦解读（期末口径，东财披露）：</b>药明康德 ROE 由2024年16.78%升至28.56%，核心驱动是<strong>净利率跳升</strong>——其中含处置参股企业股权等大额非经常性收益的一次性贡献，扣非口径 ROE 约19.7%，仍明显高于2024年，盈利质量实质改善；周转率因大量现金沉淀小幅回落、权益乘数保持低位，共同构成小幅拖累。康龙化成 ROE 由13.70%降至11.60%，<strong>净利率下滑是主要拖累</strong>（毛利率承压、汇兑损失与股权激励费用增加），总资产周转率边际改善形成正向对冲，权益乘数小幅上行贡献有限。两家公司的杜邦差异印证了“龙头盈利质量更优、追赶者靠效率与杠杆追赶”的格局。</div>
+
+  <p class="src">数据来源：东方财富F10财务分析（上市公司年报数据）。杜邦拆解为基于公开数据的平均口径测算，仅供教学分析。</p>
 </div>
 
 <!-- ============ 六、利润变动归因 ============ -->
@@ -283,7 +315,7 @@
     <li><b>商誉与资产减值风险：</b>两家公司历史上均有外延并购布局，若被并购标的经营不及预期，存在商誉减值风险，将直接影响当期报表利润质量。</li>
   </ul>
   <h3>7.5 免责声明</h3>
-  <p class="src">本报告财务数据均来源于东方财富数据中心公开的上市公司定期财务数据接口（其数据源自沪深交易所披露的上市公司年报），指标为基于公开数据的测算，仅用于课堂教学与研究分析，不构成任何投资建议。部分口径（如期末口径周转率、期末口径ROE）与专业机构可能有细微差异。</p>
+  <p class="src">本报告财务数据均来源于东方财富数据中心公开的上市公司定期财务数据接口（其数据源自沪深交易所披露的上市公司年报），指标为基于公开数据的测算，仅用于课堂教学与研究分析，不构成任何投资建议。部分口径（如平均口径周转率、平均口径ROE）与专业机构可能有细微差异。</p>
 </div>
 
 <!-- ============ 附录一 半年报 ============ -->
@@ -301,7 +333,7 @@
     <tr><th>序号</th><th>姓名</th><th>学号</th><th>负责内容 / 工作贡献</th></tr>
     <tr><td>1</td><td>何佳园</td><td>24117030124</td><td>数据收集与整理：从东方财富F10提取两家公司2020-2025年报及2026中报财务数据，构建数据底稿</td></tr>
     <tr><td>2</td><td>陈嘉慧</td><td>24117031041</td><td>财务分析：撰写盈利能力、偿债能力、营运能力、成长能力四大能力分析及杜邦分析文字</td></tr>
-    <tr><td>3</td><td>陈芊芊</td><td>24117031037</td><td>可视化与页面制作：基于ECharts构建交互图表、杜邦展开树、利润归因瀑布图并完成网页部署</td></tr>
+    <tr><td>3</td><td>陈芊芊</td><td>24117031037</td><td>可视化与页面制作：基于ECharts构建交互图表、杜邦因果拆解引擎并完成网页部署</td></tr>
   </table>
   <p class="src">说明：本报告由3人小组协作完成，分工如上。全部财务数据来源已在正文各图表下方标注，可在浏览器中点击链接跳转验证原始数据。</p>
 </div>
@@ -311,10 +343,10 @@
 <div class="appendix">
   <p>本报告为《基于HTML的财务报告分析可视化》课程作业，小组成员共同完成。现就使用AI工具的情况作出如下诚信说明：</p>
   <ul>
-    <li><b>使用的AI工具：</b>本报告在数据整理、分析框架构建、可视化页面（HTML+ECharts）编写过程中，使用了AI编程助手（Trae）辅助完成。</li>
+    <li><b>使用的AI工具：</b>本报告在数据整理、分析框架构建、可视化页面（HTML+ECharts+SVG）编写过程中，使用了AI编程助手（Trae）辅助完成。</li>
     <li><b>数据来源声明：</b>本报告全部财务数据均来源于公开一手数据渠道——东方财富数据中心（F10财务分析，链接见正文附录及图表下方），其数据源自沪深交易所披露的药明康德（603259）、康龙化成（300759）年度报告与半年度报告。所有关键数据均已在正文标注来源网址，可通过点击链接进行核验。宏观与行业数据来源已分别标注。</li>
     <li><b>原创性声明：</b>本报告的分析结论、文字表述由小组成员在AI辅助下撰写并校对，AI生成的数据与分析内容均经人工核验。我们承诺报告内容真实、数据可溯源，无抄袭、无虚构。</li>
-    <li><b>使用说明：</b>AI主要承担数据处理、图表代码生成与排版工作；财务分析的判断、结论与文字由小组成员主导完成。</li>
+    <li><b>使用说明：</b>AI主要承担数据处理、图表代码生成与排版工作；财务分析的判断、结论与文字由小组成员主导完成。页面中「AI 解读本节点」功能为可选项，需使用者自行配置API Key，Key仅保存在本机浏览器，不向任何第三方上传。</li>
   </ul>
   <p>小组成员签名（手写）与学号：</p>
   <div class="sign">
@@ -331,6 +363,18 @@
 
 </div>
 
+<!-- AI 设置浮层 -->
+<div class="overlay hidden no-print" id="aiOverlay">
+  <div class="modal">
+    <div class="modal-head"><span>AI 分析设置 · DeepSeek API（可选）</span><button type="button" class="du-btn" onclick="document.getElementById('aiOverlay').classList.add('hidden')">✕</button></div>
+    <label class="fld">API Key <input id="aiKey" type="password" placeholder="sk-..." autocomplete="off"></label>
+    <label class="fld">Base URL <input id="aiBase" type="text"></label>
+    <label class="fld">模型 <input id="aiModel" type="text" placeholder="deepseek-chat"></label>
+    <p style="font-size:12px;color:var(--mut);">Key 仅保存在本机浏览器 localStorage，分析时仅发送当前选中节点的数据。</p>
+    <div class="modal-actions"><button type="button" onclick="document.getElementById('aiOverlay').classList.add('hidden')">关闭</button><button type="button" class="solid" onclick="duSaveAi()">保存</button></div>
+  </div>
+</div>
+
 <script>
 
 const YEARS=["2020", "2021", "2022", "2023", "2024", "2025"], revW=[165.35, 229.02, 393.55, 403.41, 392.41, 454.56], revK=[51.34, 74.44, 102.66, 115.38, 122.76, 140.95], npW=[29.6, 50.97, 88.14, 96.07, 94.5, 191.51], npK=[11.72, 16.61, 13.75, 16.01, 17.93, 16.64];
@@ -338,7 +382,6 @@ const dnpW=[23.85, 41.19, 83.45, 97.48, 99.88, 132.41], dnpK=[8.01, 13.41, 14.21
 const roeW=[12.91, 14.05, 20.62, 18.99, 16.78, 28.56], roeK=[14.13, 17.31, 13.28, 13.91, 13.7, 11.6], drW=[29.32, 29.69, 27.46, 24.64, 26.44, 22.18], drK=[24.98, 44.01, 47.1, 50.0, 40.56, 41.91], crW=[2.91, 1.69, 1.66, 2.06, 2.38, 3.21], crK=[2.8, 2.9, 1.67, 2.98, 1.8, 0.93];
 const toW=[0.44, 0.45, 0.66, 0.58, 0.51, 0.5], toK=[0.47, 0.49, 0.53, 0.49, 0.49, 0.55], itW=[3.83, 2.95, 3.68, 3.74, 3.72, 3.0], itK=[9.7, 7.39, 5.78, 5.33, 5.41, 5.23];
 const grW=[28.46, 38.5, 71.84, 2.51, -2.73, 15.84], grK=[36.64, 45.0, 37.92, 12.39, 6.39, 14.82], gnW=[59.62, 72.19, 72.91, 9.0, -1.63, 102.65], gnK=[114.25, 41.68, -17.24, 16.48, 12.01, -7.22];
-
 const WU='药明康德', KL='康龙化成';
 const CW='#1f5bb3', CK='#2f9e6e', CA='#c0392b', CG='#e6a23c';
 function mk(id,opt){echarts.init(document.getElementById(id)).setOption(opt);}
@@ -392,6 +435,239 @@ mk('chartAttr',{tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},legend:{top
   series:[{type:'waterfall',data:[1619.3,1205.39,-275.94,-139.58,28.56],
     itemStyle:{color:function(p){return p.dataIndex===0?'#7f8fa6':(p.dataIndex===4?'#1f5bb3':(p.value>=0?'#2f9e6e':'#c0392b'));}}
   }]});
+
+</script>
+<script>
+
+/* ================= 杜邦因果拆解引擎 ================= */
+const CXO_DATA = {"药明康德": {"name": "药明康德", "code": "603259.SH", "years": {"2020": {"rev": 165.35, "np": 29.6, "gm": 37.99, "ce": 20.09, "npm": 17.9, "at": 0.438, "em": 1.507, "roe": 11.81, "avgA": 377.65, "avgE": 250.64}, "2021": {"rev": 229.02, "np": 50.97, "gm": 36.28, "ce": 14.03, "npm": 22.26, "at": 0.452, "em": 1.419, "roe": 14.26, "avgA": 507.09, "avgE": 357.38}, "2022": {"rev": 393.55, "np": 88.14, "gm": 37.3, "ce": 14.9, "npm": 22.4, "at": 0.657, "em": 1.398, "roe": 20.57, "avgA": 599.09, "avgE": 428.42}, "2023": {"rev": 403.41, "np": 96.07, "gm": 41.18, "ce": 17.37, "npm": 23.81, "at": 0.583, "em": 1.351, "roe": 18.76, "avgA": 691.8, "avgE": 512.22}, "2024": {"rev": 392.41, "np": 94.5, "gm": 41.48, "ce": 17.4, "npm": 24.08, "at": 0.51, "em": 1.344, "roe": 16.49, "avgA": 769.98, "avgE": 573.02}, "2025": {"rev": 454.56, "np": 191.51, "gm": 47.64, "ce": 5.51, "npm": 42.13, "at": 0.496, "em": 1.317, "roe": 27.49, "avgA": 917.23, "avgE": 696.67}}}, "康龙化成": {"name": "康龙化成", "code": "300759.SZ", "years": {"2020": {"rev": 51.34, "np": 11.72, "gm": 37.47, "ce": 14.63, "npm": 22.84, "at": 0.47, "em": 1.302, "roe": 13.98, "avgA": 109.22, "avgE": 83.86}, "2021": {"rev": 74.44, "np": 16.61, "gm": 35.99, "ce": 13.67, "npm": 22.31, "at": 0.491, "em": 1.576, "roe": 17.28, "avgA": 151.49, "avgE": 96.15}, "2022": {"rev": 102.66, "np": 13.75, "gm": 36.71, "ce": 23.32, "npm": 13.39, "at": 0.528, "em": 1.84, "roe": 13.01, "avgA": 194.41, "avgE": 105.68}, "2023": {"rev": 115.38, "np": 16.01, "gm": 35.75, "ce": 21.87, "npm": 13.88, "at": 0.491, "em": 1.951, "roe": 13.3, "avgA": 234.85, "avgE": 120.39}, "2024": {"rev": 122.76, "np": 17.93, "gm": 34.24, "ce": 19.63, "npm": 14.61, "at": 0.487, "em": 1.835, "roe": 13.06, "avgA": 252.02, "avgE": 137.3}, "2025": {"rev": 140.95, "np": 16.64, "gm": 34.83, "ce": 23.03, "npm": 11.8, "at": 0.553, "em": 1.703, "roe": 11.11, "avgA": 255.11, "avgE": 149.81}}}};
+const DU = {company:'药明康德', bY:'2024', cY:'2025', expanded:new Set(['roe','roa','npm','at','em']),
+  selected:'roe', playing:null, t:{x:60,y:30,k:1}, raf:0};
+const DU_KIDS = {roe:['roa','em'], roa:['npm','at'], npm:['gm','ce'], at:['rev','avgA'], em:['avgA2','avgE']};
+const DU_UNIT = {roe:'pct',roa:'pct',npm:'pct',gm:'pct',ce:'pct',at:'x',rev:'money',avgA:'money',avgA2:'money',em:'x',avgE:'money'};
+const DU_LVL = {roe:1,roa:2,npm:3,gm:4,ce:4,at:3,rev:4,avgA:4,em:2,avgA2:3,avgE:3};
+const DU_DEF = {
+  roe:{label:'ROE 净资产收益率',formula:'归母净利润 ÷ 平均归母净资产',note:'股东回报的终局指标，恒等于 净利率×总资产周转率×权益乘数'},
+  roa:{label:'ROA 总资产收益率',formula:'净利率 × 总资产周转率',note:'每单位总资产创造的归母净利润，衡量资产整体回报'},
+  npm:{label:'净利率（归母）',formula:'归母净利润 ÷ 营业收入',note:'盈利质量核心，受毛利率、期间费用、税负及其他损益共同决定'},
+  gm:{label:'毛利率',formula:'毛利 ÷ 营业收入',note:'产品议价能力与成本控制的体现，主要由市场供需与产能利用率决定'},
+  ce:{label:'综合费用及税负率',formula:'毛利率 − 净利率（倒算）',note:'含销售/管理/研发/财务费用、税金、所得税及其他损益、少数股东损益的净影响'},
+  at:{label:'总资产周转率',formula:'营业收入 ÷ 平均总资产',note:'资产使用效率，单位：次；资产扩张过快会摊薄周转率'},
+  rev:{label:'营业收入',formula:'利润表营业收入',note:'收入成长性，行业景气度的直接体现'},
+  avgA:{label:'平均总资产',formula:'（期初+期末总资产）÷ 2',note:'资产扩张速度；周转率的分母'},
+  avgA2:{label:'平均总资产',formula:'（期初+期末总资产）÷ 2',note:'权益乘数的分子：资产规模'},
+  em:{label:'权益乘数',formula:'平均总资产 ÷ 平均归母净资产',note:'财务杠杆水平，数值越高杠杆越大'},
+  avgE:{label:'平均归母净资产',formula:'（期初+期末归母净资产）÷ 2',note:'股东权益积累，受留存收益与股本变动影响'}
+};
+const DU_INSIGHT = {
+  roe:['ROE 综合反映股东回报水平，是杜邦分析的终局变量。'],
+  roa:['ROA 反映资产整体回报，比 ROE 更能剥离杠杆影响。'],
+  npm:['净利率是盈利质量的核心，其变动通常主导 ROE 方向。'],
+  gm:['毛利率由市场与产能利用率决定，是盈利能力的基本盘。'],
+  ce:['综合费用及税负率上升会直接侵蚀净利率；其中研发投入占比高属于“以费换未来”的成长型特征。'],
+  at:['周转率体现资产运营效率；现金等低收益资产占比过高会拖累周转。'],
+  rev:['收入增长是成长能力的核心体现，行业拐点最先反映在订单与收入上。'],
+  avgA:['资产扩张快于收入时会摊薄周转率；反之则提升效率。'],
+  avgA2:['资产规模的放大同时抬升乘数与摊薄周转率，需结合判断。'],
+  em:['杠杆抬升会放大 ROE，但也增加偿债压力与财务风险。'],
+  avgE:['净资产持续增厚（留存收益）会降低乘数，反映内生造血能力强。']
+};
+function duFmt(v, u){ if(v===null||v===undefined) return '—';
+  if(u==='pct') return v.toFixed(2)+'%';
+  if(u==='x') return v.toFixed(3)+'×';
+  return v.toFixed(1)+'亿'; }
+function duDelta(v0,v1,u){ if(u==='pct'){const d=(v1-v0)*100; return (d>=0?'+':'')+d.toFixed(2)+'pp';}
+  if(u==='x'){const d=v1-v0; return (d>=0?'+':'')+d.toFixed(3);}
+  const d=v1-v0; return (d>=0?'+':'')+d.toFixed(1)+'亿'; }
+function duVal(d,n){ const k = (n==='avgA2')?'avgA':n; return {v0:d.Y0[k], v1:d.Y1[k], u:DU_UNIT[n]}; }
+function duCalc(){
+  const d = CXO_DATA[DU.company];
+  const Y0=d.years[DU.bY], Y1=d.years[DU.cY];
+  const P0=Y0.npm/100,P1=Y1.npm/100,T0=Y0.at,T1=Y1.at,E0=Y0.em,E1=Y1.em;
+  const R0=P0*T0*E0*100, R1=P1*T1*E1*100, dR=R1-R0;
+  const C={};
+  C.npm=(P1-P0)*T0*E0*100;
+  C.at=P1*(T1-T0)*E0*100;
+  C.em=P1*T1*(E1-E0)*100;
+  C.roa=C.npm+C.at;
+  const dN=Y1.npm-Y0.npm, dG=Y1.gm-Y0.gm, dC=Y1.ce-Y0.ce;
+  if(Math.abs(dN)>1e-9){ C.gm=(dG/dN)*C.npm; C.ce=(-dC/dN)*C.npm; } else { C.gm=0; C.ce=0; }
+  if(Math.abs(T1-T0)>1e-12){ const lR=Math.log(Y1.rev/Y0.rev), lA=Math.log(Y1.avgA/Y0.avgA), lT=Math.log(T1/T0);
+    C.rev=(lR/lT)*C.at; C.avgA=(-lA/lT)*C.at; } else { C.rev=0; C.avgA=0; }
+  if(Math.abs(E1-E0)>1e-12){ const lA=Math.log(Y1.avgA/Y0.avgA), lE=Math.log(Y1.avgE/Y0.avgE), lEm=Math.log(E1/E0);
+    C.avgA2=(lA/lEm)*C.em; C.avgE=(-lE/lEm)*C.em; } else { C.avgA2=0; C.avgE=0; }
+  return {d,Y0,Y1,R0,R1,dR,C};
+}
+function duDir(c){ return Math.abs(c)<0.05?'neu':(c>0?'pos':'neg'); }
+function duNodeList(){ const out=[]; const walk=(id,par,depth)=>{ out.push({id,par,depth}); if(DU.expanded.has(id)) (DU_KIDS[id]||[]).forEach(k=>walk(k,id,depth+1)); };
+  walk('roe',null,0); return out; }
+function duLayout(){
+  const ns=duNodeList(), ids=new Set(ns.map(n=>n.id));
+  const pos={}; let leaf=0;
+  const assign=id=>{ const ks=(DU_KIDS[id]||[]).filter(k=>ids.has(k));
+    if(DU.expanded.has(id)&&ks.length){ let a=null,b=null; ks.forEach(k=>{assign(k); if(a===null)a=pos[k]; b=pos[k]; }); pos[id]=(a+b)/2; }
+    else pos[id]=leaf++; };
+  assign('roe');
+  return ns.map(n=>({id:n.id,par:n.par,depth:n.depth,x:pos[n.id],y:n.depth}));
+}
+/* ---------- SVG 渲染 ---------- */
+const duSvg=document.getElementById('duSvg'), duZoom=document.getElementById('duZoom'),
+      duLinks=document.getElementById('duLinks'), duNodes=document.getElementById('duNodes'),
+      duTip=document.getElementById('duTip'), duView=document.getElementById('duViewport');
+const XS=150, YS=108;
+function duApplyT(){ duZoom.setAttribute('transform','translate('+DU.t.x+','+DU.t.y+') scale('+DU.t.k+')'); }
+function duRender(){
+  const ns=duLayout(), L=duCalc();
+  const ids=new Set(ns.map(n=>n.id));
+  let maxA=0; ns.forEach(n=>{ maxA=Math.max(maxA, Math.abs(L.C[n.id])||0); });
+  const colOf=c=>{ const d=duDir(c); if(d==='pos') return '#1f8a5f'; if(d==='neg') return '#c0392b'; return '#8a94a6'; };
+  duLinks.innerHTML=''; duNodes.innerHTML='';
+  ns.forEach(n=>{
+    const v=duVal(L,n), c=L.C[n.id]||0, rel=maxA>0.001?Math.abs(c)/maxA:0;
+    const fill=colOf(c), op=0.20+0.62*Math.min(rel,1);
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('transform','translate('+((n.x+0.5)*XS)+','+(n.y*YS+8)+')');
+    const w=n.id==='roe'?180:150, h=n.id==='roe'?58:48;
+    g.setAttribute('class','du-node');
+    g.dataset.id=n.id;
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',-w/2); r.setAttribute('y',-h/2); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx',10);
+    r.setAttribute('fill',fill); r.setAttribute('fill-opacity',op);
+    r.setAttribute('stroke', fill); r.setAttribute('stroke-width', DU.selected===n.id?2.5:1);
+    const t1=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t1.setAttribute('y', n.id==='roe'?-6:-4); t1.setAttribute('text-anchor','middle');
+    t1.setAttribute('font-size', n.id==='roe'?17:14); t1.setAttribute('font-weight','700');
+    t1.setAttribute('fill', duDir(c)==='neu'?'#33415c':'#ffffff');
+    t1.textContent=DU_DEF[n.id].label;
+    const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t2.setAttribute('y', n.id==='roe'?16:14); t2.setAttribute('text-anchor','middle');
+    t2.setAttribute('font-size', n.id==='roe'?13:11.5); t2.setAttribute('fill', duDir(c)==='neu'?'#5b6b84':'rgba(255,255,255,.92)');
+    t2.textContent=duFmt(v.v1,v.u)+'  '+duDelta(v.v0,v.v1,v.u);
+    const t3=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t3.setAttribute('y', n.id==='roe'?34:30); t3.setAttribute('text-anchor','middle');
+    t3.setAttribute('font-size',10); t3.setAttribute('fill', duDir(c)==='neu'?'#8a94a6':'rgba(255,255,255,.75)');
+    t3.textContent='ΔROE贡献 '+ (c>=0?'+':'') + c.toFixed(2) + 'pp';
+    g.appendChild(r); g.appendChild(t1); g.appendChild(t2); g.appendChild(t3);
+    g.addEventListener('click', ev=>{ ev.stopPropagation(); duSelect(n.id); });
+    g.addEventListener('dblclick', ev=>{ ev.stopPropagation(); DU.expanded.add('roe'); duFocus(n.id); });
+    g.addEventListener('mousemove', ev=>{ const b=duView.getBoundingClientRect(); duTip.style.left=(ev.clientX-b.left+14)+'px'; duTip.style.top=(ev.clientY-b.top+14)+'px'; duTip.style.opacity=1;
+      duTip.innerHTML='<b>'+DU_DEF[n.id].label+'</b><span>'+DU_DEF[n.id].formula+'</span><span>'+DU.bY+'：'+duFmt(v.v0,v.u)+' → '+DU.cY+'：'+duFmt(v.v1,v.u)+'</span><span>对 ΔROE 贡献：'+(c>=0?'+':'')+c.toFixed(2)+'pp</span>'; });
+    g.addEventListener('mouseleave', ()=>{ duTip.style.opacity=0; });
+    duNodes.appendChild(g);
+    if(n.par){ const p=ns.find(m=>m.id===n.par); const l=document.createElementNS('http://www.w3.org/2000/svg','path');
+      const x1=(p.x+0.5)*XS, y1=p.y*YS+8+p.kx, x2=(n.x+0.5)*XS, y2=n.y*YS+8;
+      l.setAttribute('d','M'+x1+' '+y1+' C '+x1+' '+(y1+28)+', '+x2+' '+(y2-28)+', '+x2+' '+y2);
+      l.setAttribute('fill','none'); l.setAttribute('stroke', colOf(L.C[n.id]||0)); l.setAttribute('stroke-width', 1.6);
+      l.setAttribute('stroke-opacity', 0.55); duLinks.appendChild(l); }
+  });
+  duApplyT();
+  duUpdateRail(L, ns);
+}
+function duSelect(id){ DU.selected=id;
+  if(DU_KIDS[id]&&DU_KIDS[id].length){ if(DU.expanded.has(id)) DU.expanded.delete(id); else DU.expanded.add(id); }
+  duRender();
+}
+function duFocus(id){ const ns=duLayout(); const n=ns.find(m=>m.id===id); if(!n) return;
+  const w=duView.clientWidth, h=duView.clientHeight;
+  DU.t.k=1.15; DU.t.x=w/2-(n.x+0.5)*XS*DU.t.k; DU.t.y=h/2-(n.y*YS+20)*DU.t.k; duApplyT(); }
+function duFit(){ const ns=duLayout(); let minX=1e9,maxX=-1e9,maxY=0;
+  ns.forEach(n=>{ minX=Math.min(minX,(n.x+0.5)*XS); maxX=Math.max(maxX,(n.x+0.5)*XS); maxY=Math.max(maxY,n.y*YS+8); });
+  const w=duView.clientWidth-40, h=duView.clientHeight-40, bw=(maxX-minX)+190, bh=maxY+70;
+  DU.t.k=Math.min(w/bw, h/bh, 1.4); if(DU.t.k<0.4) DU.t.k=0.4;
+  DU.t.x=(duView.clientWidth-bw*DU.t.k)/2-minX*DU.t.k;
+  DU.t.y=(duView.clientHeight-bh*DU.t.k)/2;
+  duApplyT();
+}
+/* ---------- 画布交互：拖拽平移 / 滚轮缩放 ---------- */
+(function(){
+  let drag=null;
+  duView.addEventListener('mousedown', ev=>{ if(ev.target.closest('.du-node')) return; drag={x:ev.clientX,y:ev.clientY,tx:DU.t.x,ty:DU.t.y}; });
+  window.addEventListener('mousemove', ev=>{ if(!drag) return; DU.t.x=drag.tx+(ev.clientX-drag.x); DU.t.y=drag.ty+(ev.clientY-drag.y); duApplyT(); });
+  window.addEventListener('mouseup', ()=>{ drag=null; });
+  duView.addEventListener('wheel', ev=>{ ev.preventDefault(); const b=duView.getBoundingClientRect();
+    const mx=ev.clientX-b.left, my=ev.clientY-b.top;
+    const f=ev.deltaY<0?1.12:0.89; DU.t.k*=f; if(DU.t.k<0.3)DU.t.k=0.3; if(DU.t.k>3)DU.t.k=3;
+    DU.t.x=mx-(mx-DU.t.x)*f; DU.t.y=my-(my-DU.t.y)*f; duApplyT(); }, {passive:false});
+})();
+/* ---------- 右侧分析栏 ---------- */
+function duPathTo(id){ const p=[]; let cur=id;
+  while(cur){ p.unshift(cur); if(cur==='roe') break; for(const k in DU_KIDS){ if(DU_KIDS[k].includes(cur)){ cur=k; break; } } }
+  return p; }
+function duUpdateRail(L, ns){
+  const id=DU.selected, v=duVal(L,id), c=L.C[id]||0, d=duDir(c);
+  const dR=L.dR, share=Math.abs(dR)>0.01?Math.abs(c)/Math.abs(dR)*100:0;
+  const path=duPathTo(id);
+  const ctx=dR>0?('ROE由 '+L.R0.toFixed(2)+'% 升至 '+L.R1.toFixed(2)+'%（+'+dR.toFixed(2)+'pp）'):('ROE由 '+L.R0.toFixed(2)+'% 降至 '+L.R1.toFixed(2)+'%（'+dR.toFixed(2)+'pp）');
+  let h='<div class="rl-h">'+DU_DEF[id].label+'<span class="rl-lv">L'+DU_LVL[id]+'</span></div>';
+  h+='<div class="rl-ctx">'+CXO_DATA[DU.company].name+' · '+DU.bY+'→'+DU.cY+' · '+ctx+'</div>';
+  h+='<div class="rl-blk"><div class="rl-t">公式</div><div class="rl-f">'+DU_DEF[id].formula+'</div></div>';
+  h+='<div class="rl-blk"><div class="rl-t">数值变化</div><div class="rl-num">'+duFmt(v.v0,v.u)+' <b>→</b> '+duFmt(v.v1,v.u)+' <em>'+duDelta(v.v0,v.v1,v.u)+'</em></div></div>';
+  h+='<div class="rl-blk"><div class="rl-t">对 ΔROE 的贡献</div><div class="rl-chip '+(d==='pos'?'ch-pos':d==='neg'?'ch-neg':'ch-neu')+'">'+(c>=0?'+':'')+c.toFixed(2)+'pp</div><div class="rl-sub">占 ΔROE 绝对值的 '+share.toFixed(1)+'% · '+ (d==='pos'?'正向推动':d==='neg'?'负向拖累':'中性')+'</div></div>';
+  h+='<div class="rl-blk"><div class="rl-t">因果路径</div><div class="rl-path">'+path.map((pid,i)=>{
+    const pc=L.C[pid]||0; return '<span class="pp">'+DU_DEF[pid].label.split(' ')[0]+' <i>'+(pc>=0?'+':'')+pc.toFixed(2)+'</i></span>'+(i<path.length-1?'<b>→</b>':'');
+  }).join('')+'</div></div>';
+  h+='<div class="rl-blk"><div class="rl-t">解读</div><div class="rl-note">'+(DU_INSIGHT[id]||[]).join(' ')+'</div></div>';
+  h+='<div class="rl-blk"><div class="rl-t">归因结论</div><div class="rl-note">'+ (Math.abs(c)<0.05?'该因素对ROE变化贡献接近零（中性）。':(c>0?'该因素是本期内 ROE 变化的推动项，贡献 +'+c.toFixed(2)+'pp。':'该因素是本期内 ROE 变化的拖累项，贡献 '+c.toFixed(2)+'pp。')) +'</div></div>';
+  h+='<button type="button" class="rl-ai no-print" onclick="duAskAi()">AI 解读本节点</button><div id="duAiOut"></div>';
+  document.getElementById('duRail').innerHTML=h;
+}
+/* ---------- 顶部工具条 ---------- */
+function duRefreshHeader(L){
+  const dR=L.dR;
+  const el=document.getElementById('duRoeDelta');
+  el.textContent=(dR>=0?'+':'')+dR.toFixed(2)+'pp';
+  el.className='du-chip '+(dR>=0?'ch-pos':'ch-neg');
+  document.getElementById('duCtx').textContent=CXO_DATA[DU.company].name+' · 平均口径 ROE '+L.R0.toFixed(2)+'% → '+L.R1.toFixed(2)+'%';
+}
+function duRebuild(){ const L=duCalc(); duRender(); duRefreshHeader(L); }
+function duSetCompany(c){ DU.company=c; if(DU_KIDS.roe) DU.expanded=new Set(['roe','roa','npm','at','em']); DU.selected='roe';
+  document.querySelectorAll('.du-tab').forEach(b=>b.classList.toggle('on', b.dataset.c===c));
+  duRebuild(); }
+function duSetBase(v){ if(parseInt(v)>=parseInt(DU.cY)) DU.cY=String(parseInt(v)+1); document.getElementById('duBase').value=v; document.getElementById('duCur').value=DU.cY; duRebuild(); }
+function duSetCur(v){ if(parseInt(v)<=parseInt(DU.bY)) return; DU.cY=v; duRebuild(); }
+function duPlay(){
+  if(DU.playing){ clearInterval(DU.playing); DU.playing=null; document.getElementById('duPlay').textContent='▶ 播放'; return; }
+  document.getElementById('duPlay').textContent='⏸ 暂停';
+  DU.playing=setInterval(()=>{ const yrs=CXO_DATA[DU.company]&&Object.keys(CXO_DATA[DU.company].years).filter(y=>parseInt(y)>parseInt(DU.bY));
+    const i=yrs.indexOf(DU.cY); const nxt=yrs[(i+1)%yrs.length]; DU.cY=nxt; document.getElementById('duCur').value=nxt; duRebuild(); }, 900);
+}
+function duExpandAll(){ DU.expanded=new Set(['roe','roa','npm','at','em','gm','ce','rev','avgA','avgA2','avgE']); duRender(); }
+function duCollapseAll(){ DU.expanded=new Set(['roe','roa','npm','at','em']); duRender(); }
+/* ---------- AI 解读（可选，Key 仅存本机 localStorage） ---------- */
+function duAiCfg(){ try{ return JSON.parse(localStorage.getItem('du_ai_cfg')||'null'); }catch(e){ return null; } }
+function duAskAi(){
+  const cfg=duAiCfg(); const out=document.getElementById('duAiOut');
+  if(!cfg||!cfg.key){ out.innerHTML='<div class="ai-msg">未配置 AI Key。请点击右上角「AI 设置」填写自己的 DeepSeek API Key（可选功能）。</div>'; return; }
+  const L=duCalc(), id=DU.selected, v=duVal(L,id);
+  const prompt='公司：'+CXO_DATA[DU.company].name+'（'+CXO_DATA[DU.company].code+'）\n分析期：'+DU.bY+' → '+DU.cY+'\n节点：'+DU_DEF[id].label+'（'+DU_DEF[id].formula+'）\n数值：'+duFmt(v.v0,v.u)+' → '+duFmt(v.v1,v.u)+'（'+duDelta(v.v0,v.v1,v.u)+'）\n对ΔROE贡献：'+(L.C[id]||0).toFixed(2)+'pp（'+(duDir(L.C[id]||0)==='pos'?'正向':duDir(L.C[id]||0)==='neg'?'负向':'中性')+'）\n当前ROE：'+L.R0.toFixed(2)+'% → '+L.R1.toFixed(2)+'%\n\n请用200字以内，从财务分析角度解读该节点变化的原因与含义，语言简洁专业。';
+  out.innerHTML='<div class="ai-msg">AI 分析中…</div>';
+  fetch((cfg.base||'https://api.deepseek.com')+'/chat/completions', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+    body:JSON.stringify({model:cfg.model||'deepseek-chat', messages:[{role:'system',content:'你是一名严谨的中国财务分析师，擅长杜邦分析与财务报告解读。'},{role:'user',content:prompt}]})})
+  .then(r=>r.json()).then(j=>{ if(j.error) throw new Error(j.error.message||'API错误');
+    out.innerHTML='<div class="ai-msg ai-ok">'+String(j.choices[0].message.content).replace(/\n/g,'<br>')+'</div>'; })
+  .catch(e=>{ out.innerHTML='<div class="ai-msg">AI 调用失败：'+e.message+'（可能为浏览器跨域限制，可在本地打开页面使用）</div>'; });
+}
+function duOpenAi(){
+  const cfg=duAiCfg()||{};
+  document.getElementById('aiKey').value=cfg.key||''; document.getElementById('aiBase').value=cfg.base||'https://api.deepseek.com';
+  document.getElementById('aiModel').value=cfg.model||'deepseek-chat';
+  document.getElementById('aiOverlay').classList.remove('hidden');
+}
+function duSaveAi(){ const c={key:document.getElementById('aiKey').value.trim(), base:document.getElementById('aiBase').value.trim()||'https://api.deepseek.com', model:document.getElementById('aiModel').value.trim()||'deepseek-chat'};
+  if(c.key) localStorage.setItem('du_ai_cfg', JSON.stringify(c));
+  document.getElementById('aiOverlay').classList.add('hidden'); }
+/* ---------- 初始化 / 打印 ---------- */
+window.addEventListener('beforeprint', ()=>{ duExpandAll(); });
+window.addEventListener('afterprint', ()=>{ duRebuild(); });
+document.addEventListener('DOMContentLoaded', ()=>{
+  const baseSel=document.getElementById('duBase'), curSel=document.getElementById('duCur');
+  const yrs=Object.keys(CXO_DATA[DU.company].years);
+  yrs.filter(y=>parseInt(y)<2025).forEach(y=>{ const o=document.createElement('option'); o.value=y; o.textContent=y; baseSel.appendChild(o); });
+  yrs.filter(y=>parseInt(y)>2020).forEach(y=>{ const o=document.createElement('option'); o.value=y; o.textContent=y; curSel.appendChild(o); });
+  baseSel.value=DU.bY; curSel.value=DU.cY;
+  duRebuild(); setTimeout(duFit, 60);
+});
+
 </script>
 </body>
 </html>
