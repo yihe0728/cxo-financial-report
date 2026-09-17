@@ -711,8 +711,13 @@ function duSaveAi(){ const c={key:document.getElementById('aiKey').value.trim(),
   if(c.key) localStorage.setItem('du_ai_cfg', JSON.stringify(c));
   document.getElementById('aiOverlay').classList.add('hidden'); }
 /* ---------- 初始化 / 打印 ---------- */
-window.addEventListener('beforeprint', ()=>{ duExpandAll(); duFit(); window.__charts.forEach(c=>c.resize()); });
-window.addEventListener('afterprint', ()=>{ duRebuild(); window.__charts.forEach(c=>c.resize()); });
+const __resizeCharts=()=>window.__charts.forEach(c=>{ try{c.resize();}catch(e){} });
+window.addEventListener('beforeprint', ()=>{ duExpandAll(); duFit(); setTimeout(__resizeCharts,150); });
+window.addEventListener('afterprint', ()=>{ duRebuild(); setTimeout(__resizeCharts,150); });
+try{ window.matchMedia('print').addEventListener('change', e=>{
+  if(e.matches){ setTimeout(()=>{ duExpandAll(); duFit(); __resizeCharts(); },80); }
+  else{ setTimeout(__resizeCharts,150); }
+}); }catch(e){}
 document.addEventListener('DOMContentLoaded', ()=>{
   const baseSel=document.getElementById('duBase'), curSel=document.getElementById('duCur');
   const yrs=Object.keys(CXO_DATA[DU.company].years);
