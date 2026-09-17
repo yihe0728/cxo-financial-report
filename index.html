@@ -116,7 +116,7 @@
     .du-bar{page-break-inside:avoid;}
     .du-rail{width:100%;max-height:none;border:1px solid #ccc;page-break-inside:avoid;}
     #duViewport{height:440px;}
-    .chart{height:270px;page-break-inside:avoid;}
+    .chart{height:300px;page-break-inside:avoid;}
     .sec,.appendix,table{page-break-inside:avoid;}
     table{min-width:0 !important;}
     th,td{white-space:normal !important;padding:5px 8px;font-size:12px;}
@@ -418,7 +418,7 @@ const toW=[0.44, 0.45, 0.66, 0.58, 0.51, 0.5], toK=[0.47, 0.49, 0.53, 0.49, 0.49
 const grW=[28.46, 38.5, 71.84, 2.51, -2.73, 15.84], grK=[36.64, 45.0, 37.92, 12.39, 6.39, 14.82], gnW=[59.62, 72.19, 72.91, 9.0, -1.63, 102.65], gnK=[114.25, 41.68, -17.24, 16.48, 12.01, -7.22];
 const WU='药明康德', KL='康龙化成';
 const CW='#1f5bb3', CK='#2f9e6e', CA='#c0392b', CG='#e6a23c';
-function mk(id,opt){echarts.init(document.getElementById(id)).setOption(opt);}
+window.__charts=[];function mk(id,opt){const c=echarts.init(document.getElementById(id));c.setOption(opt);window.__charts.push(c);return c;}
 function axisOpt(x){return {tooltip:{trigger:'axis'},legend:{top:4},grid:{left:50,right:20,top:38,bottom:34},xAxis:{type:'category',data:x},yAxis:{type:'value'}};}
 
 mk('chartScale',Object.assign(axisOpt(YEARS),{series:[
@@ -711,8 +711,8 @@ function duSaveAi(){ const c={key:document.getElementById('aiKey').value.trim(),
   if(c.key) localStorage.setItem('du_ai_cfg', JSON.stringify(c));
   document.getElementById('aiOverlay').classList.add('hidden'); }
 /* ---------- 初始化 / 打印 ---------- */
-window.addEventListener('beforeprint', ()=>{ duExpandAll(); duFit(); });
-window.addEventListener('afterprint', ()=>{ duRebuild(); });
+window.addEventListener('beforeprint', ()=>{ duExpandAll(); duFit(); window.__charts.forEach(c=>c.resize()); });
+window.addEventListener('afterprint', ()=>{ duRebuild(); window.__charts.forEach(c=>c.resize()); });
 document.addEventListener('DOMContentLoaded', ()=>{
   const baseSel=document.getElementById('duBase'), curSel=document.getElementById('duCur');
   const yrs=Object.keys(CXO_DATA[DU.company].years);
