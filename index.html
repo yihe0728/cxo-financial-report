@@ -24,11 +24,12 @@
   p{margin:9px 0;text-align:justify;}
   .sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:14px 0;}
   .chart{width:100%;height:380px;margin:12px 0;}
-  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;}
-  th,td{border:1px solid var(--line);padding:9px 12px;text-align:center;line-height:1.6;word-break:break-word;}
+  table{width:100%;min-width:820px;border-collapse:collapse;margin:12px 0;font-size:14px;}
+  th,td{border:1px solid var(--line);padding:10px 16px;text-align:center;line-height:1.6;white-space:nowrap;}
   th{background:#e8eef8;font-weight:600;}
   td.l{text-align:left;}
   tr:nth-child(even) td{background:#fafcff;}
+  .sec{overflow-x:auto;}
   .src{font-size:12px;color:var(--mut);margin-top:8px;word-break:break-all;}
   .src a{color:var(--a);text-decoration:none;}
   .src a:hover{text-decoration:underline;}
@@ -44,7 +45,7 @@
   ul{margin:8px 0 8px 22px;}
   li{margin:5px 0;}
   .foot{margin-top:50px;border-top:1px solid var(--line);padding-top:16px;text-align:center;color:var(--mut);font-size:13px;}
-  .appendix{background:#fdfbf7;border:1px dashed #c9b98a;border-radius:12px;padding:18px 22px;margin:14px 0;}
+  .appendix{background:#fdfbf7;border:1px dashed #c9b98a;border-radius:12px;padding:18px 22px;margin:14px 0;overflow-x:auto;}
   .sign{margin-top:14px;display:flex;gap:40px;flex-wrap:wrap;font-size:14px;}
   .sign span{border-top:1px solid #999;padding-top:6px;min-width:120px;text-align:center;}
 
@@ -103,16 +104,27 @@
   .modal-actions button{border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--txt);}
   .modal-actions button.solid{background:var(--a);color:#fff;border-color:var(--a);}
   @media(max-width:900px){.du-main{flex-direction:column;}.du-rail{width:100%;max-height:none;}}
+  @page{size:A4;margin:12mm 11mm;}
   @media print{
-    .no-print{display:none !important;}
+    .no-print,.badges{display:none !important;}
     nav{display:none;}
+    header{padding:14px 0 10px;border-bottom-width:2px;}
+    header h1{font-size:21px;}
+    h2{font-size:18px;page-break-after:avoid;}
+    h3{page-break-after:avoid;}
     .du-main{display:block;}
+    .du-bar{page-break-inside:avoid;}
     .du-rail{width:100%;max-height:none;border:1px solid #ccc;page-break-inside:avoid;}
-    #duViewport{height:520px;}
-    .chart{height:300px;}
+    #duViewport{height:440px;}
+    .chart{height:270px;page-break-inside:avoid;}
     .sec,.appendix,table{page-break-inside:avoid;}
+    table{min-width:0 !important;}
+    th,td{white-space:normal !important;padding:5px 8px;font-size:12px;}
+    .sec,.appendix{overflow:visible !important;}
+    .kpi-grid{grid-template-columns:repeat(4,1fr);gap:8px;}
     body{font-size:12px;}
     a{color:inherit;text-decoration:none;}
+    .sign{page-break-inside:avoid;}
   }
 </style>
 </head>
@@ -429,12 +441,17 @@ mk('chartGrowth',Object.assign(axisOpt(YEARS),{series:[
   {name:KL+'净利增速%',type:'line',data:gnK,color:CG,smooth:true}
 ]}));
 
-mk('chartAttr',{tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},legend:{top:4},
-  grid:{left:60,right:20,top:38,bottom:34},xAxis:{type:'category',data:['2024 ROE','净利率贡献','周转率贡献','乘数贡献','2025 ROE'],splitLine:{show:false}},
+mk('chartAttr',{tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},legend:{show:false},
+  grid:{left:60,right:30,top:42,bottom:34},xAxis:{type:'category',data:['2024 ROE','净利率贡献','周转率贡献','乘数贡献','2025 ROE'],splitLine:{show:false}},
   yAxis:{type:'value',name:'ROE(%)'},
-  series:[{type:'waterfall',data:[16.19,12.05,-2.76,-1.4,24.09],
-    itemStyle:{color:function(p){return p.dataIndex===0?'#7f8fa6':(p.dataIndex===4?'#1f5bb3':(p.value>=0?'#2f9e6e':'#c0392b'));}}
-  }]});
+  series:[
+    {name:'垫底',type:'bar',stack:'w',barWidth:52,silent:true,itemStyle:{color:'transparent'},data:[0,16.19,28.24,25.48,0]},
+    {name:'ROE变动',type:'bar',stack:'w',barWidth:52,
+      label:{show:true,position:'top',fontSize:12.5,fontWeight:700,color:'#33415c',
+        formatter:function(p){return (p.dataIndex===0||p.dataIndex===4)?p.value.toFixed(2)+'%':((p.value>=0?'+':'')+p.value.toFixed(2)+'pp');}},
+      itemStyle:{color:function(p){return p.dataIndex===0?'#7f8fa6':(p.dataIndex===4?'#1f5bb3':(p.value>=0?'#2f9e6e':'#c0392b'));}},
+      data:[{value:16.19},{value:12.05},{value:-2.76},{value:-1.4},{value:24.09}]}
+  ]});
 
 </script>
 <script>
@@ -517,7 +534,7 @@ function duLayout(){
 const duSvg=document.getElementById('duSvg'), duZoom=document.getElementById('duZoom'),
       duLinks=document.getElementById('duLinks'), duNodes=document.getElementById('duNodes'),
       duTip=document.getElementById('duTip'), duView=document.getElementById('duViewport');
-const CARD_W=196, CARD_H=98, GX=262, GY=78;
+const CARD_W=224, CARD_H=118, GX=336, GY=144;
 function duApplyT(){ duZoom.setAttribute('transform','translate('+DU.t.x+','+DU.t.y+') scale('+DU.t.k+')'); }
 function duText(x,y,s,attrs){ const t=document.createElementNS('http://www.w3.org/2000/svg','text');
   t.setAttribute('x',x); t.setAttribute('y',y);
@@ -543,11 +560,11 @@ function duRender(){
     ac.setAttribute('x',0); ac.setAttribute('y',0); ac.setAttribute('width',4); ac.setAttribute('height',CARD_H); ac.setAttribute('rx',2);
     ac.setAttribute('fill',fill); ac.setAttribute('fill-opacity',0.95);
     g.appendChild(r); g.appendChild(ac);
-    g.appendChild(duText(14,17,'L'+(DU_LVL[n.id]||'1')+' · '+(n.id==='roe'?'杜邦根节点':'杜邦分解'),{'font-size':10,'fill':dark?'#8a94a6':'rgba(255,255,255,.8)','font-weight':'600'}));
-    g.appendChild(duText(14,37,DU_DEF[n.id].label,{'font-size':n.id==='roe'?17:15,'font-weight':'700','fill':dark?'#33415c':'#ffffff'}));
-    g.appendChild(duText(14,63,duFmt(v.v1,v.u),{'font-size':18,'font-weight':'700','fill':dark?'#1f5bb3':'#ffffff'}));
-    g.appendChild(duText(14,80,DU.bY+':'+duFmt(v.v0,v.u)+' → '+DU.cY+':'+duFmt(v.v1,v.u),{'font-size':10.5,'fill':dark?'#5b6b84':'rgba(255,255,255,.88)'}));
-    g.appendChild(duText(14,96,'ΔROE贡献 '+(c>=0?'+':'')+c.toFixed(2)+'pp'+(Math.abs(L.dR)>0.01?' · 占ΔROE '+(Math.abs(c)/Math.abs(L.dR)*100).toFixed(0)+'%':''),{'font-size':11.5,'font-weight':'700','fill':dark?'#5b6b84':'rgba(255,255,255,.92)'}));
+    g.appendChild(duText(16,18,'L'+(DU_LVL[n.id]||'1')+' · '+(n.id==='roe'?'杜邦根节点':'杜邦分解'),{'font-size':10.5,'fill':dark?'#8a94a6':'rgba(255,255,255,.8)','font-weight':'600'}));
+    g.appendChild(duText(16,42,DU_DEF[n.id].label,{'font-size':n.id==='roe'?18:16,'font-weight':'700','fill':dark?'#33415c':'#ffffff'}));
+    g.appendChild(duText(16,70,duFmt(v.v1,v.u),{'font-size':20,'font-weight':'700','fill':dark?'#1f5bb3':'#ffffff'}));
+    g.appendChild(duText(16,90,DU.bY+':'+duFmt(v.v0,v.u)+' → '+DU.cY+':'+duFmt(v.v1,v.u),{'font-size':10,'fill':dark?'#5b6b84':'rgba(255,255,255,.88)'}));
+    g.appendChild(duText(16,111,'贡献 '+(c>=0?'+':'')+c.toFixed(2)+'pp'+(Math.abs(L.dR)>0.01?' · 占ΔROE '+(Math.abs(c)/Math.abs(L.dR)*100).toFixed(0)+'%':''),{'font-size':11,'font-weight':'700','fill':dark?'#5b6b84':'rgba(255,255,255,.92)'}));
     if(DU_KIDS[n.id]&&DU_KIDS[n.id].length){
       const open=DU.expanded.has(n.id);
       const hb=document.createElementNS('http://www.w3.org/2000/svg','rect');
